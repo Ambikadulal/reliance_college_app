@@ -59,8 +59,8 @@ class StudentDashboard extends StatelessWidget {
           _sectionTitle("🏆 Leaderboard"),
           _buildCard(
             icon: Icons.emoji_events,
-            title: "Sujan Karki",
-            subtitle: "Top Performer in AI & ML",
+            title: "Jashhhh",
+            subtitle: "Top Performer in everything",
             color: Colors.yellow.shade100,
           ),
         ],
