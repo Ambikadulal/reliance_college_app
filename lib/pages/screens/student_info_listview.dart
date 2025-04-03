@@ -72,7 +72,7 @@ class StudentInfoListView extends StatelessWidget {
             trailing: const Icon(Icons.arrow_forward),
             onTap: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('${student.name} tapped!')),
+                SnackBar(content: Text('${student.name} has been tapped!')),
               );
             },
           ),
