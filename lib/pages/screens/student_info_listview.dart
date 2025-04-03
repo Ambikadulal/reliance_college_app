@@ -12,7 +12,7 @@ class StudentInfoListView extends StatelessWidget {
       itemBuilder: (context, index) {
         return Card(
           margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          elevation: 4,
+          elevation: 10,
           child: ListTile(
             leading: CircleAvatar(child: Text('${index + 1}')),
             title: Text(items[index]),
