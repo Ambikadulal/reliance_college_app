@@ -1,5 +1,6 @@
 import 'package:bca_student_app/pages/screens/bottom_nav/bottom_navigation_bar.dart';
 import 'package:bca_student_app/pages/screens/dashboard.dart';
+import 'package:bca_student_app/pages/screens/profile.dart';
 import 'package:bca_student_app/pages/screens/student_info_listview.dart';
 import 'package:flutter/material.dart';
 
@@ -14,16 +15,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
-
-  static const TextStyle optionStyle = TextStyle(
-    fontSize: 30,
-    fontWeight: FontWeight.bold,
-  );
-
   static final List<Widget> _widgetOptions = <Widget>[
     StudentDashboard(),
     StudentInfoListView(),
-    Text('Index 2: School', style: optionStyle),
+    Profile(),
   ];
 
   void _onItemTapped(int index) {
@@ -46,5 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
         onItemTapped: _onItemTapped,
       ),
     );
+    
   }
 }
