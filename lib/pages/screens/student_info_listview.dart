@@ -5,14 +5,17 @@ class StudentInfoListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> items = List.generate(4, (index) => 'Item ${index + 1}');
+    final List<String> items = List.generate(
+      10,
+      (index) => 'Item ${index + 1}',
+    );
 
     return ListView.builder(
       itemCount: items.length,
       itemBuilder: (context, index) {
         return Card(
           margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          elevation: 4,
+          elevation: 2,
           child: ListTile(
             leading: CircleAvatar(child: Text('${index + 1}')),
             title: Text(items[index]),
