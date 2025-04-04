@@ -5,7 +5,12 @@ class StudentInfoListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> items = List.generate(4, (index) => 'Item ${index + 1}');
+    final List<String> items = [
+      'Nutan Kafle',
+      'Sijan Kafle',
+      'Item 3',
+      'Item 4'
+    ];
 
     return ListView.builder(
       itemCount: items.length,
@@ -16,7 +21,11 @@ class StudentInfoListView extends StatelessWidget {
           child: ListTile(
             leading: CircleAvatar(child: Text('${index + 1}')),
             title: Text(items[index]),
-            subtitle: Text('This is a description'),
+            subtitle: Text(index == 0
+                ? 'My name is Nutan Kafle from BCA 5th semester. This is my first BCA app.'
+                : index == 1
+                  ? 'My name is Sijan Kafle from BCA 5th semester. I study in Reliance college.'
+                  : 'This is a description'),
             trailing: Icon(Icons.arrow_forward),
             onTap: () {
               ScaffoldMessenger.of(context).showSnackBar(
