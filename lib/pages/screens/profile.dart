@@ -34,11 +34,14 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 20),
 
             // Sign In Button
-            CommonButtonWidget(buttonText: "Sign In"),
+            CommonButtonWidget(buttonText: "Sign In", buttonColor: Colors.blue),
             const SizedBox(height: 10),
 
             // Register Button
-            CommonButtonWidget(buttonText: "Register"),
+            CommonButtonWidget(
+              buttonText: "Register",
+              buttonColor: Colors.pink,
+            ),
           ],
         ),
       ),

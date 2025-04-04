@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 
 class CommonButtonWidget extends StatelessWidget {
   final String buttonText;
-  const CommonButtonWidget({super.key, required this.buttonText});
+  final Color buttonColor;
+  const CommonButtonWidget({
+    super.key,
+    required this.buttonText,
+    required this.buttonColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +19,7 @@ class CommonButtonWidget extends StatelessWidget {
           // Handle Register
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green,
+          backgroundColor: buttonColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
