@@ -38,10 +38,10 @@ class StudentInfoListView extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               color: const Color.fromARGB(
-                255,
-                219,
-                221,
-                223,
+                69,
+                242,
+                243,
+                244,
               ), // Light blue background color
               borderRadius: BorderRadius.circular(12),
             ),
@@ -54,7 +54,7 @@ class StudentInfoListView extends StatelessWidget {
                 students[index],
                 style: TextStyle(
                   color: Colors.black87,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               trailing: Icon(Icons.arrow_forward),

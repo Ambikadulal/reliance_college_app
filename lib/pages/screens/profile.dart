@@ -10,10 +10,10 @@ class Profile extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.person,
-              size: 80,
-              color: Color.fromARGB(255, 136, 126, 161),
+            CircleAvatar(
+              backgroundColor: Colors.lightBlue,
+              radius: 50,
+              child: Icon(Icons.person, size: 80, color: Colors.blue),
             ),
             const SizedBox(height: 16),
             Text(
