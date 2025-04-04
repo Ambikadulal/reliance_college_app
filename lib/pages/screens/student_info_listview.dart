@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:bca_student_app/pages/screens/student_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class Student {
   final String name;
@@ -59,7 +60,6 @@ class StudentInfoListViewState extends State<StudentInfoListView> {
     final descController = TextEditingController();
 
     if (index != null) {
-      // editing
       nameController.text = students[index].name;
       descController.text = students[index].description;
     }
@@ -148,45 +148,71 @@ class StudentInfoListViewState extends State<StudentInfoListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 244, 244, 244),
       body:
           students.isEmpty
               ? const Center(child: Text("No students yet. Tap + to add."))
-              : ListView.builder(
-                itemCount: students.length,
-                itemBuilder: (context, index) {
-                  final student = students[index];
-                  return Card(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    elevation: 10,
-                    child: ListTile(
-                      leading: CircleAvatar(child: Text('${index + 1}')),
-                      title: Text(student.name),
-                      subtitle: Text(student.description),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.more_vert), // changed from arrow
-                        onPressed: () => _showOptions(index),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) =>
-                                    StudentDetailScreen(student: student),
+              : AnimationLimiter(
+                child: ListView.builder(
+                  itemCount: students.length,
+                  itemBuilder: (context, index) {
+                    final student = students[index];
+                    return AnimationConfiguration.staggeredList(
+                      position: index,
+                      duration: const Duration(milliseconds: 500),
+                      child: SlideAnimation(
+                        verticalOffset: 50.0,
+                        child: FadeInAnimation(
+                          child: Card(
+                            color: Colors.white,
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            elevation: 0,
+
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.indigo[100],
+                                child: Text(
+                                  '${index + 1}',
+                                  style: const TextStyle(color: Colors.black),
+                                ),
+                              ),
+                              title: Text(
+                                student.name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              subtitle: Text(student.description),
+                              trailing: IconButton(
+                                icon: const Icon(Icons.more_vert),
+                                onPressed: () => _showOptions(index),
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) => StudentDetailScreen(
+                                          student: student,
+                                        ),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
-                        );
-                      },
-                    ),
-                  );
-                },
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
       floatingActionButton: FloatingActionButton.small(
         onPressed: () => _addOrEditStudentDialog(),
-        backgroundColor: Colors.green[100],
-        child: const Icon(Icons.add),
+        backgroundColor: Colors.indigo[400],
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

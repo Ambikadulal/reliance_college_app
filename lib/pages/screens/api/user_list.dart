@@ -43,7 +43,7 @@ class _UserListScreenState extends State<UserListScreen> {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: const Text("User List"),
-        backgroundColor: const Color.fromARGB(255, 208, 177, 255),
+        backgroundColor: const Color.fromARGB(214, 208, 177, 255),
       ),
       body: FutureBuilder<List<User>>(
         future: _futureUsers,
@@ -88,7 +88,7 @@ class _UserListScreenState extends State<UserListScreen> {
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
-                              Color.fromARGB(255, 159, 104, 242),
+                              Color.fromARGB(255, 132, 75, 217),
                               const Color.fromARGB(255, 163, 102, 248),
                             ],
                             begin: Alignment.topLeft,

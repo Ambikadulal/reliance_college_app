@@ -11,7 +11,7 @@ class StudentDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Student Detail"),
-        backgroundColor: Colors.green[100],
+        backgroundColor: const Color.fromARGB(255, 30, 195, 118),
       ),
       body: Center(
         child: Column(
@@ -24,6 +24,7 @@ class StudentDetailScreen extends StatelessWidget {
                 student.name[0].toUpperCase(),
                 style: const TextStyle(
                   fontSize: 35,
+                  color: Color.fromARGB(255, 29, 92, 239),
                   fontWeight: FontWeight.bold,
                 ),
               ),

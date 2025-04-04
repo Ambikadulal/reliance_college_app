@@ -140,9 +140,7 @@ class _SigninState extends State<Signin> {
                       await prefs.setString('email', _emailController.text);
 
                       Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (context) => MyHomePage(title: "Bca app"),
-                        ),
+                        MaterialPageRoute(builder: (context) => MyHomePage()),
                         (route) => false,
                       );
                     }
