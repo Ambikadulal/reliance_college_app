@@ -5,7 +5,30 @@ class StudentInfoListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> items = List.generate(4, (index) => 'Item ${index + 1}');
+    // final List<String> items = List.generate(4, (index) => 'Item ${index + 1}');
+    final List<String> items = [
+      'Siddhanta Khanal',
+      'Bishal Tamang',
+      'Manish Bastakoti',
+      'Tulman Tamang',
+      'Prabesh Shrestha',
+      'Pranaya Shrestha',
+      'Mandip Kafle',
+      'Jasmin KC',
+      'Karma Bhote',
+      'Sudeep Bhattrai',
+      'Sushil Kafle',
+      'Prashant Giri',
+      'Nutan Kafle',
+      'Krinisha Shrestha',
+      'Dipesh Shrestha',
+      'Bhupendra Shahi',
+      'Bibek Poudel',
+      'Roshan Gurung',
+      'Gautam Ghale',
+      'Pratik Khadka',
+      'Pukar Rai',
+    ];
 
     return ListView.builder(
       itemCount: items.length,
