@@ -17,12 +17,6 @@ class StudentInfoListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    final List<String> items = List.generate(
-      10,
-      (index) => 'Item ${index + 1}',
-    );
-=======
     // List of students
     final List<Map<String, dynamic>> studentJsonList = [
       {"id": "1", "name": "Bhupendra Bahadur Shahi", "age": 20},
@@ -42,15 +36,14 @@ class StudentInfoListView extends StatelessWidget {
       {"id": "15", "name": "Pratik Khadka", "age": 22},
       {"id": "16", "name": "Pukar Rai", "age": 23},
       {"id": "17", "name": "Roshan Gurung", "age": 20},
-      {"id": "18", "name": "Siddhanta Khanal", "age": 21},
-      {"id": "19", "name": "Sudeep Bhattarai", "age": 22},
+      {"id": "18", "name": "Siddhanta Kumar Yadav", "age": 21},
+      {"id": "19", "name": "Sudeep Limbu", "age": 22},
       {"id": "20", "name": "Sushil Kafle", "age": 23},
       {"id": "21", "name": "Tulman Tamang", "age": 20},
     ];
 
     final List<Student> students =
         studentJsonList.map((json) => Student.fromJson(json)).toList();
->>>>>>> d16d47e (Added JSON-based student listing in StudentInfoListView)
 
     return ListView.builder(
       itemCount: students.length,
@@ -58,13 +51,8 @@ class StudentInfoListView extends StatelessWidget {
         final student = students[index];
 
         return Card(
-<<<<<<< HEAD
-          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          elevation: 2,
-=======
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           elevation: 4,
->>>>>>> d16d47e (Added JSON-based student listing in StudentInfoListView)
           child: ListTile(
             leading: CircleAvatar(child: Text(student.id)),
             title: Text(student.name),
