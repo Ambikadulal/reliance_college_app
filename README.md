@@ -1,7 +1,8 @@
 # bca_student_app
 
 A new Flutter project.
-//TODO: update this file as yoyr project
+//TODO: update this file as your project
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
