@@ -7,7 +7,7 @@ class Signin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.indigo[100],
+      backgroundColor: Colors.blueGrey[100],
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
