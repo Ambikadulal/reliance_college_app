@@ -13,7 +13,7 @@ class CommonButtonWidget extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green,
+          backgroundColor: Colors.amber,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
