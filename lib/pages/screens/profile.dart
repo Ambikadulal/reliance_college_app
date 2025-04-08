@@ -1,12 +1,23 @@
+import 'package:bca_student_app/pages/screens/sign_in.dart';
 import 'package:bca_student_app/pages/screens/widgets/button.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  final String email;
+
+  const ProfileScreen({super.key, this.email = ""});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return
+    // appBar:
+    //     email != ""
+    //         ? AppBar(
+    //           title: const Text("Profile"),
+    //           backgroundColor: Colors.blue,
+    //         )
+    //         : null,
+    Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Column(
@@ -27,18 +38,29 @@ class ProfileScreen extends StatelessWidget {
             ),
 
             // Email Placeholder
-            const Text(
-              "guest@example.com",
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
+            Text(email, style: TextStyle(fontSize: 16, color: Colors.grey)),
             const SizedBox(height: 20),
 
             // Sign In Button
-            CommonButtonWidget(buttonText: "Sign In"),
+            CommonButtonWidget(
+              buttonText: "Sign In",
+              onPressed:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Signin()),
+                  ),
+            ),
             const SizedBox(height: 10),
 
             // Register Button
-            CommonButtonWidget(buttonText: "Register"),
+            CommonButtonWidget(
+              buttonText: "Register",
+              onPressed:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Signin()),
+                  ),
+            ),
           ],
         ),
       ),
