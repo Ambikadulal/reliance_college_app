@@ -38,8 +38,8 @@ import 'package:flutter/material.dart';
 
 // Student List Data
 final List<Map<String, String>> students = [
-  {"id": "1", "name": "Aarav Sharma"},
-  {"id": "2", "name": "Vivaan Gupta"},
+  {"id": "1", "name": "Bhupendra Bahadur"},
+  {"id": "2", "name": "Bibek Poudel"},
   {"id": "3", "name": "Reyansh Iyer"},
   {"id": "4", "name": "Aadhya Mehta"},
   {"id": "5", "name": "Diya Verma"},
