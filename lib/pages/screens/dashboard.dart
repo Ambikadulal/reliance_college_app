@@ -52,7 +52,6 @@ class StudentDashboard extends StatelessWidget {
           // Section: Attendance Summary
           _sectionTitle("📊 Attendance Summary"),
           _buildAttendanceProgress(0.92, "92% Attendance"),
-
           const SizedBox(height: 20),
 
           // Section: Leaderboard
