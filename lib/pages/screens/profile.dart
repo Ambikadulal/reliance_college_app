@@ -23,14 +23,11 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
 
-            // User Name Placeholder
-            const Text(
-              "Guest User",
+            // Email Placeholder
+            Text(
+              email,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-
-            // Email Placeholder
-            Text(email, style: TextStyle(fontSize: 16, color: Colors.grey)),
             const SizedBox(height: 20),
 
             // Sign In Button

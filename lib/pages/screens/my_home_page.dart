@@ -3,6 +3,7 @@ import 'package:bca_student_app/pages/screens/dashboard.dart';
 import 'package:bca_student_app/pages/screens/profile.dart';
 import 'package:bca_student_app/pages/screens/student_info_listview.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
@@ -22,11 +23,20 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   late int _selectedIndex;
+  String? storedEmail = "";
 
   @override
   void initState() {
     super.initState();
     _selectedIndex = widget.initialTab;
+    getStoredEmail();
+  }
+
+  Future<void> getStoredEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      storedEmail = prefs.getString('email') ?? widget.email;
+    });
   }
 
   void _onItemTapped(int index) {
@@ -41,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final List<Widget> _widgetOptions = <Widget>[
       StudentDashboard(),
       StudentInfoListView(),
-      ProfileScreen(email: widget.email),
+      ProfileScreen(email: storedEmail!),
     ];
 
     return Scaffold(

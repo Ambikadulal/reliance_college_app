@@ -1,6 +1,7 @@
 import 'package:bca_student_app/pages/screens/my_home_page.dart';
 import 'package:bca_student_app/pages/screens/register.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -132,20 +133,22 @@ class _SigninState extends State<Signin> {
                 ),
                 SizedBox(height: 50),
                 InkWell(
-                  onTap: () {
+                  onTap: () async {
                     if (_formKey.currentState!.validate()) {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setString('email', _emailController.text);
+
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder:
-                              (context) => MyHomePage(
-                                title: "Bca app",
-                                initialTab: 2,
-                                email: _emailController.text,
-                              ),
+                              (context) =>
+                                  MyHomePage(title: "Bca app", initialTab: 2),
                         ),
                       );
                     }
                   },
+
                   child: ClipOval(
                     child: Container(
                       height: 60,
