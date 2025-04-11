@@ -1,5 +1,6 @@
 import 'package:bca_student_app/pages/screens/bottom_nav/bottom_navigation_bar.dart';
 import 'package:bca_student_app/pages/screens/dashboard.dart';
+import 'package:bca_student_app/pages/screens/profile.dart';
 import 'package:bca_student_app/pages/screens/student_info_listview.dart';
 import 'package:flutter/material.dart';
 
