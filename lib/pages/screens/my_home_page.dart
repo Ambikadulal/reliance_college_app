@@ -19,7 +19,7 @@ class _MyHomePageState extends State<MyHomePage> {
   static final List<Widget> _widgetOptions = <Widget>[
     StudentDashboard(),
     StudentInfoListView(),
-    ProfileScreen(email: '', username: '',),
+    ProfileScreen(email: '', username: ''),
   ];
 
   void _onItemTapped(int index) {
@@ -32,6 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        // backgroundColor: Colors.blueGrey[100],
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),

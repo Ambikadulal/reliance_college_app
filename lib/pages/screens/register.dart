@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:bca_student_app/pages/screens/profile.dart';
 import 'package:bca_student_app/pages/screens/signin.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -10,26 +10,25 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  late final TextEditingController _emailController;
-  late final TextEditingController _passwordController;
-  late final TextEditingController _usernameController;
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
-  final _formkey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
-  @override
-  void initState() {
-    _emailController = TextEditingController();
-    _passwordController = TextEditingController();
-    _usernameController = TextEditingController();
-    super.initState();
-  }
+  Future<void> _saveUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username', usernameController.text.trim());
+    await prefs.setString('email', emailController.text.trim());
 
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    _usernameController.dispose();
-    super.dispose();
+    if (!mounted) return;
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('User data saved locally!')));
+
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (context) => const Signin()));
   }
 
   @override
@@ -41,10 +40,9 @@ class _RegisterState extends State<Register> {
           r'\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*'
           r'[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4]'
           r'[0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9]'
-          r'[0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\'
-          r'x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])';
+          r'[0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f'
+          r'\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])';
       final regex = RegExp(pattern);
-
       return value!.isEmpty || !regex.hasMatch(value)
           ? 'Enter a valid email address'
           : null;
@@ -53,54 +51,44 @@ class _RegisterState extends State<Register> {
     String? validatePassword(String? value) {
       const pattern = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#\$&*~]).{8,}$';
       final regex = RegExp(pattern);
-
       return value == null || !regex.hasMatch(value)
           ? 'Password must be at least 8 characters,\ninclude upper, lower, digit & special char'
           : null;
     }
 
     return Scaffold(
-      backgroundColor: Colors.blueGrey[50],
+      backgroundColor: Colors.blueGrey[100],
       body: Form(
-        key: _formkey,
+        key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 80),
-            Text(
-              "Create Account",
-              style: TextStyle(
-                fontSize: 32,
-                color: Colors.green[700],
-                fontWeight: FontWeight.bold,
+            const SizedBox(height: 100),
+            Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: Text(
+                "Create Account",
+                style: TextStyle(
+                  fontSize: 30,
+                  color: Colors.green[400],
+                  fontWeight: FontWeight.w900,
+                ),
               ),
             ),
             const SizedBox(height: 35),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: Material(
-                elevation: 3,
-                borderRadius: BorderRadius.circular(15),
-                child: TextFormField(
-                  controller: _usernameController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the user name';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.person_2_rounded,
-                      color: Colors.green,
-                    ),
-                    hintText: "Username",
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide.none,
-                    ),
+              child: TextField(
+                controller: usernameController,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.person_2_rounded,
+                    color: Colors.yellow[300],
+                  ),
+                  hintText: "Username",
+                  hintStyle: const TextStyle(color: Colors.black),
+                  enabledBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
                   ),
                 ),
               ),
@@ -108,27 +96,18 @@ class _RegisterState extends State<Register> {
             const SizedBox(height: 25),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: Material(
-                elevation: 3,
-                borderRadius: BorderRadius.circular(15),
-                child: TextFormField(
-                  controller: _emailController,
-                  validator: (value) => validateEmail(value),
-                  //{
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'Please enter an email';
-                  //   }
-                  //   return null;
-                  // },
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.email_outlined, color: Colors.green),
-                    hintText: "Email",
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide.none,
-                    ),
+              child: TextFormField(
+                controller: emailController,
+                validator: validateEmail,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.email_outlined,
+                    color: Colors.yellow[300],
+                  ),
+                  hintText: "Email",
+                  hintStyle: const TextStyle(color: Colors.black),
+                  enabledBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
                   ),
                 ),
               ),
@@ -136,87 +115,67 @@ class _RegisterState extends State<Register> {
             const SizedBox(height: 25),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: Material(
-                elevation: 3,
-                borderRadius: BorderRadius.circular(15),
-                child: TextFormField(
-                  controller: _passwordController,
-                  validator: (value) => validatePassword(value),
-
-                  //(value) {
-                  //   if (value == null || value.isEmpty) {
-                  //     return 'Please enter password';
-                  //   }
-                  //   return null;
-                  // },
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.lock_open_outlined,
-                      color: Colors.green,
-                    ),
-                    hintText: "Password",
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide.none,
-                    ),
+              child: TextFormField(
+                controller: passwordController,
+                validator: validatePassword,
+                obscureText: true,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.lock_open_outlined,
+                    color: Colors.yellow[300],
+                  ),
+                  hintText: "Password",
+                  hintStyle: const TextStyle(color: Colors.black),
+                  enabledBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 10),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Register",
+                  const Text(
+                    "Register account",
                     style: TextStyle(
-                      fontSize: 28,
+                      fontSize: 30,
                       color: Colors.deepPurple,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w900,
                     ),
                   ),
                   InkWell(
                     onTap: () {
-                      if (_formkey.currentState!.validate()) {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder:
-                                (context) => ProfileScreen(
-                                  email: _emailController.text,
-                                  username: _usernameController.text,
-                                ),
-                          ),
-                        );
+                      if (_formKey.currentState != null &&
+                          _formKey.currentState!.validate()) {
+                        _saveUserData();
                       }
                     },
-                    child: CircleAvatar(
-                      radius: 25,
-                      backgroundColor: Colors.deepPurple[300],
-                      child: const Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        color: Colors.white,
+                    child: ClipOval(
+                      child: Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(color: Colors.blue[300]),
+                        child: const Icon(Icons.arrow_forward_ios_outlined),
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 5),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
               child: Row(
                 children: [
-                  Text(
-                    "Already have an account? ",
+                  const Text(
+                    "Already have an account ",
                     style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[800],
+                      fontSize: 20,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w900,
                     ),
                   ),
                   InkWell(
@@ -225,12 +184,12 @@ class _RegisterState extends State<Register> {
                         MaterialPageRoute(builder: (context) => const Signin()),
                       );
                     },
-                    child: Text(
-                      "Sign in",
+                    child: const Text(
+                      "signin",
                       style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
                         color: Colors.blueAccent,
+                        fontWeight: FontWeight.w900,
                       ),
                     ),
                   ),
