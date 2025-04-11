@@ -68,7 +68,7 @@ class Register extends StatelessWidget {
                     ),
                   ),
                 ),
-                hintText: "email",
+                hintText: "email name",
                 hintStyle: TextStyle(color: Colors.black),
                 enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey),
