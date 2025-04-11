@@ -19,7 +19,7 @@ class _MyHomePageState extends State<MyHomePage> {
   static final List<Widget> _widgetOptions = <Widget>[
     StudentDashboard(),
     StudentInfoListView(),
-    ProfileScreen(),
+    ProfileScreen(email: '', username: ''),
   ];
 
   void _onItemTapped(int index) {
