@@ -139,12 +139,13 @@ class _SigninState extends State<Signin> {
                           await SharedPreferences.getInstance();
                       await prefs.setString('email', _emailController.text);
 
-                      Navigator.of(context).pushReplacement(
+                      Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
                           builder:
                               (context) =>
                                   MyHomePage(title: "Bca app", initialTab: 2),
                         ),
+                        (route) => false,
                       );
                     }
                   },
