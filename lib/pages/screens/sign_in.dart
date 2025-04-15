@@ -1,6 +1,8 @@
+import 'package:bca_student_app/pages/screens/my_home_page.dart';
 import 'package:bca_student_app/pages/screens/profile.dart';
 import 'package:bca_student_app/pages/screens/register_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Signin extends StatefulWidget {
   const Signin({super.key});
@@ -13,13 +15,11 @@ class _SigninState extends State<Signin> {
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
 
-  final _formKey = GlobalKey<FormState>();
-
   @override
   void initState() {
-    super.initState();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+    super.initState();
   }
 
   @override
@@ -29,20 +29,7 @@ class _SigninState extends State<Signin> {
     super.dispose();
   }
 
-  InputDecoration _inputDecoration(String hint, IconData icon) {
-    return InputDecoration(
-      prefixIcon: Icon(icon, color: Colors.grey[700]),
-      hintText: hint,
-      hintStyle: const TextStyle(color: Colors.grey),
-      filled: true,
-      fillColor: Colors.white,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none,
-      ),
-      contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-    );
-  }
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -62,122 +49,157 @@ class _SigninState extends State<Signin> {
           : null;
     }
 
-    String? validatePassword(String? value) {
-      const pattern = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#\$&*~]).{8,}$';
-      final regex = RegExp(pattern);
-
-      return value == null || !regex.hasMatch(value)
-          ? 'Password must be at least 8 characters,\ninclude upper, lower, digit & special char'
-          : null;
-    }
-
     return Scaffold(
-      backgroundColor: Colors.grey[100],
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      backgroundColor: Colors.blueGrey[100],
+      body: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: 100),
+            Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: Text(
+                "welcome back",
+                style: TextStyle(
+                  fontSize: 30,
+                  color: Colors.pink[400],
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ),
+            SizedBox(height: 30),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 40),
+              child: TextFormField(
+                controller: _emailController,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+
+                // validator: (value) {
+                //   if (value == null || value.isEmpty) {
+                //     return 'Please enter your email';
+                //   }
+                //   return null;
+                // },
+                validator: validateEmail,
+
+                onChanged: (value) {
+                  print("_emailController:::: ${_emailController.text}");
+                  // Handle email input
+                },
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.allow(RegExp("[0-9@a-zA-Z.]")),
+                ],
+                decoration: InputDecoration(
+                  prefixIcon: SizedBox(
+                    height: 10,
+                    width: 10,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Icon(
+                        Icons.email_outlined,
+                        color: Colors.yellow[300],
+                      ),
+                    ),
+                  ),
+                  hintText: "Email address",
+                  hintStyle: TextStyle(color: Colors.black),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 25),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 40),
+              child: TextField(
+                decoration: InputDecoration(
+                  prefixIcon: SizedBox(
+                    height: 10,
+                    width: 10,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Icon(
+                        Icons.lock_outline,
+                        color: Colors.yellow[300],
+                      ),
+                    ),
+                  ),
+                  hintText: "Password",
+                  hintStyle: TextStyle(color: Colors.black),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 50),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  "Welcome back",
+                Text(
+                  "sign in  ..................",
                   style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    fontSize: 14,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w900,
                   ),
                 ),
-                const SizedBox(height: 40),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: _inputDecoration(
-                    "Email address",
-                    Icons.email_outlined,
-                  ),
-                  validator: (value) => validateEmail(value),
-                  // value == null || value.isEmpty
-                  //     ? 'Enter your email'
-                  //     : null,
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: _inputDecoration("Password", Icons.lock_outline),
-                  obscureText: true,
-                  validator: (value) => validatePassword(value),
-                ),
-                const SizedBox(height: 40),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Sign In",
-                      style: TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.deepPurple,
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder:
-                                  (context) => ProfileScreen(
-                                    email: _emailController.text,
-                                    username: '',
-                                  ),
-                            ),
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepPurple,
-                        shape: const CircleBorder(),
-                        padding: const EdgeInsets.all(16),
-                      ),
-                      child: const Icon(
-                        Icons.arrow_forward,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => Register()),
-                        );
-                      },
-                      child: const Text(
-                        "Register",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold,
+                InkWell(
+                  onTap: () {
+                    if (_formKey.currentState!.validate()) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => MyHomePage(title: ''),
                         ),
-                      ),
+                      );
+                    }
+                  },
+                  child: ClipOval(
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(color: Colors.blue[300]),
+                      child: Icon(Icons.arrow_forward_ios_outlined),
                     ),
-                    const Text(
-                      "Forgot password?",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.redAccent,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ],
             ),
-          ),
+            SizedBox(height: 50),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => Register()),
+                      );
+                    },
+                    child: Text(
+                      "Register",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.green,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "Forgot password",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.red,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
