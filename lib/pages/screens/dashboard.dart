@@ -11,7 +11,7 @@ class StudentDashboard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Section: Today's Schedule
-          _sectionTitle("📅 Today's Schedule"),
+          _sectionTitle("📅 Today's Schedulesss"),
           _buildCard(
             icon: Icons.computer,
             title: "Artificial Intelligence",
