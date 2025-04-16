@@ -53,88 +53,123 @@ class StudentInfoListViewState extends State<StudentInfoListView> {
     await prefs.setString('students', encodedData);
   }
 
-  Future<void> _addStudentDialog() async {
+  Future<void> _addOrEditStudentDialog({int? index}) async {
     final nameController = TextEditingController();
     final descController = TextEditingController();
 
+    if (index != null) {
+      // editing
+      nameController.text = students[index].name;
+      descController.text = students[index].description;
+    }
+
     await showDialog(
       context: context,
-      builder:
-          (context) => AlertDialog(
-            title: const Text("Add Student"),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: nameController,
-                  decoration: const InputDecoration(labelText: "Name"),
-                ),
-                TextField(
-                  controller: descController,
-                  decoration: const InputDecoration(labelText: "Description"),
-                ),
-              ],
+      builder: (context) => AlertDialog(
+        title: Text(index == null ? "Add Student" : "Edit Student"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: nameController,
+              decoration: const InputDecoration(labelText: "Name"),
             ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text("Cancel"),
-              ),
-              TextButton(
-                onPressed: () {
-                  final name = nameController.text.trim();
-                  final desc = descController.text.trim();
-                  if (name.isNotEmpty && desc.isNotEmpty) {
-                    setState(() {
-                      students.add(Student(name: name, description: desc));
-                    });
-                    _saveToPrefs();
-                  }
-                  Navigator.pop(context);
-                },
-                child: const Text("OK"),
-              ),
-            ],
+            TextField(
+              controller: descController,
+              decoration: const InputDecoration(labelText: "Description"),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel"),
           ),
+          TextButton(
+            onPressed: () {
+              final name = nameController.text.trim();
+              final desc = descController.text.trim();
+              if (name.isNotEmpty && desc.isNotEmpty) {
+                setState(() {
+                  if (index == null) {
+                    students.add(Student(name: name, description: desc));
+                  } else {
+                    students[index] = Student(name: name, description: desc);
+                  }
+                });
+                _saveToPrefs();
+              }
+              Navigator.pop(context);
+            },
+            child: const Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showOptions(int index) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.edit),
+              title: const Text('Edit'),
+              onTap: () {
+                Navigator.pop(context);
+                _addOrEditStudentDialog(index: index);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.delete),
+              title: const Text('Delete'),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  students.removeAt(index);
+                });
+                _saveToPrefs();
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   // title: const Text('Student Info List'),
-      //   // backgroundColor: Colors.blueGrey,
-      // ),
-      body:
-          students.isEmpty
-              ? const Center(child: Text("No students yet. Tap + to add."))
-              : ListView.builder(
-                itemCount: students.length,
-                itemBuilder: (context, index) {
-                  final student = students[index];
-                  return Card(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
+      body: students.isEmpty
+          ? const Center(child: Text("No students yet. Tap + to add."))
+          : ListView.builder(
+              itemCount: students.length,
+              itemBuilder: (context, index) {
+                final student = students[index];
+                return Card(
+                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  elevation: 10,
+                  child: ListTile(
+                    leading: CircleAvatar(child: Text('${index + 1}')),
+                    title: Text(student.name),
+                    subtitle: Text(student.description),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.more_vert), // changed from arrow
+                      onPressed: () => _showOptions(index),
                     ),
-                    elevation: 10,
-                    child: ListTile(
-                      leading: CircleAvatar(child: Text('${index + 1}')),
-                      title: Text(student.name),
-                      subtitle: Text(student.description),
-                      trailing: const Icon(Icons.arrow_forward),
-                      onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('${student.name} tapped!')),
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
+                    onTap: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('${student.name} tapped!')),
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _addStudentDialog,
+        onPressed: () => _addOrEditStudentDialog(),
         backgroundColor: Colors.blueGrey,
         child: const Icon(Icons.add),
       ),
