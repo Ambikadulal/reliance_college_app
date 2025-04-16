@@ -11,7 +11,7 @@ class StudentDashboard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Section: Today's Schedule
-          _sectionTitle("📅 Today's Schedule"),
+          _sectionTitle("📅 Today's Schedulesss"),
           _buildCard(
             icon: Icons.computer,
             title: "Artificial Intelligence",
@@ -59,8 +59,8 @@ class StudentDashboard extends StatelessWidget {
           _sectionTitle("🏆 Leaderboard"),
           _buildCard(
             icon: Icons.emoji_events,
-            title: "Jashhhh",
-            subtitle: "Top Performer in everything",
+            title: "Sujan Karki",
+            subtitle: "Top Performer in AI & ML",
             color: Colors.yellow.shade100,
           ),
         ],
