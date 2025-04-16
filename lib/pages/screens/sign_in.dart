@@ -1,5 +1,4 @@
 import 'package:bca_student_app/pages/screens/my_home_page.dart';
-import 'package:bca_student_app/pages/screens/profile.dart';
 import 'package:bca_student_app/pages/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -75,12 +74,6 @@ class _SigninState extends State<Signin> {
                 controller: _emailController,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
 
-                // validator: (value) {
-                //   if (value == null || value.isEmpty) {
-                //     return 'Please enter your email';
-                //   }
-                //   return null;
-                // },
                 validator: validateEmail,
 
                 onChanged: (value) {
