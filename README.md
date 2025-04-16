@@ -1,4 +1,4 @@
-# bca_student_app
+# bcas_student_app
 # this is quite the experience
 A new Flutter project.
 //TODO: update this file as yoyr project
