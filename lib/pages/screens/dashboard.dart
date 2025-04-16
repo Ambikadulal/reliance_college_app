@@ -42,12 +42,12 @@ class StudentDashboard extends StatelessWidget {
           _sectionTitle("📝 Upcoming Assignments"),
           _buildCard(
             icon: Icons.assignment,
-            title: "Software Engineering Case Study",
+            title: "Software Engineering Case Study of prashant",
             subtitle: "Due Date: March 15 | Submit via Google Classroom",
             color: Colors.purple.shade100,
           ),
 
-          const SizedBox(height: 10),
+          const SizedBox(height: 13),
 
           // Section: Attendance Summary
           _sectionTitle("📊 Attendance Summary"),

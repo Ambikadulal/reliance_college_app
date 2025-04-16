@@ -38,7 +38,7 @@ class ProfileScreen extends StatelessWidget {
             ),
 
             // Email Placeholder
-            Text(email, style: TextStyle(fontSize: 16, color: Colors.grey)),
+            Text(email, style: TextStyle(fontSize: 16, color: const Color.fromARGB(255, 14, 9, 9))),
             const SizedBox(height: 20),
 
             // Sign In Button
