@@ -1,14 +1,8 @@
-import 'package:bca_student_app/pages/screens/profile.dart';
+import 'package:bca_student_app/pages/screens/my_home_page.dart';
 import 'package:bca_student_app/pages/screens/register_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-
-/// task 
-/// 
-/// validation onall form fields
-/// add sign in button on register screen and send to related screen
-/// add register in button on sign screen and send to related screen
-/// profile screen should show the email of the user, user name 
 class Signin extends StatefulWidget {
   const Signin({super.key});
 
@@ -38,6 +32,22 @@ class _SigninState extends State<Signin> {
 
   @override
   Widget build(BuildContext context) {
+    String? validateEmail(String? value) {
+      const pattern =
+          r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
+          r'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'
+          r'\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*'
+          r'[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4]'
+          r'[0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9]'
+          r'[0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\'
+          r'x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])';
+      final regex = RegExp(pattern);
+
+      return value!.isEmpty || !regex.hasMatch(value)
+          ? 'Enter a valid email address'
+          : null;
+    }
+
     return Scaffold(
       backgroundColor: Colors.blueGrey[100],
       body: Form(
@@ -62,13 +72,23 @@ class _SigninState extends State<Signin> {
               padding: EdgeInsets.symmetric(horizontal: 40),
               child: TextFormField(
                 controller: _emailController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  return null;
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+
+                // validator: (value) {
+                //   if (value == null || value.isEmpty) {
+                //     return 'Please enter your email';
+                //   }
+                //   return null;
+                // },
+                validator: validateEmail,
+
+                onChanged: (value) {
+                  print("_emailController:::: ${_emailController.text}");
+                  // Handle email input
                 },
-             
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.allow(RegExp("[0-9@a-zA-Z.]")),
+                ],
                 decoration: InputDecoration(
                   prefixIcon: SizedBox(
                     height: 10,
@@ -130,9 +150,7 @@ class _SigninState extends State<Signin> {
                     if (_formKey.currentState!.validate()) {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder:
-                              (context) =>
-                                  ProfileScreen(email: _emailController.text),
+                          builder: (context) => MyHomePage(title: ''),
                         ),
                       );
                     }

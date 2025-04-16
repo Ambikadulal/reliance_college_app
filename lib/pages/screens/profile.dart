@@ -1,11 +1,11 @@
-import 'package:bca_student_app/pages/screens/sign_in.dart';
+import 'package:bca_student_app/pages/screens/signin.dart';
 import 'package:bca_student_app/pages/screens/widgets/button.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
   final String email;
 
-  const ProfileScreen({super.key, this.email = ""});
+  const ProfileScreen({super.key, this.email = "", required String username});
 
   @override
   Widget build(BuildContext context) {

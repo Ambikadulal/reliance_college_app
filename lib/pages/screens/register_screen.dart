@@ -1,9 +1,34 @@
-
-import 'package:bca_student_app/pages/screens/sign_in.dart';
+import 'package:bca_student_app/pages/screens/signin.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Register extends StatelessWidget {
+class Register extends StatefulWidget {
   const Register({super.key});
+
+  @override
+  State<Register> createState() => _RegisterState();
+}
+
+class _RegisterState extends State<Register> {
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  Future<void> _saveUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username', usernameController.text.trim());
+    await prefs.setString('email', emailController.text.trim());
+
+    if (!mounted) return;
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('User data saved locally!')));
+
+    // You can navigate 
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (context) => const Signin()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,11 +37,7 @@ class Register extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: 100),
-          // Padding(
-          //   padding: const EdgeInsets.only(right: 300),
-          //   child: Icon(Icons.arrow_back,),
-          // ),
+          const SizedBox(height: 100),
           Padding(
             padding: const EdgeInsets.only(left: 5),
             child: Text(
@@ -28,85 +49,68 @@ class Register extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 35),
+          const SizedBox(height: 35),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 40),
+            padding: const EdgeInsets.symmetric(horizontal: 40),
             child: TextField(
+              controller: usernameController,
               decoration: InputDecoration(
-                prefixIcon: SizedBox(
-                  height: 10,
-                  width: 10,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Icon(
-                      Icons.person_2_rounded,
-                      color: Colors.yellow[300],
-                    ),
-                  ),
+                prefixIcon: Icon(
+                  Icons.person_2_rounded,
+                  color: Colors.yellow[300],
                 ),
                 hintText: "Username",
-                hintStyle: TextStyle(color: Colors.black),
-                enabledBorder: UnderlineInputBorder(
+                hintStyle: const TextStyle(color: Colors.black),
+                enabledBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey),
                 ),
               ),
             ),
           ),
-          SizedBox(height: 25),
+          const SizedBox(height: 25),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 40),
+            padding: const EdgeInsets.symmetric(horizontal: 40),
             child: TextField(
+              controller: emailController,
               decoration: InputDecoration(
-                prefixIcon: SizedBox(
-                  height: 10,
-                  width: 10,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Icon(
-                      Icons.email_outlined,
-                      color: Colors.yellow[300],
-                    ),
-                  ),
+                prefixIcon: Icon(
+                  Icons.email_outlined,
+                  color: Colors.yellow[300],
                 ),
-                hintText: "email name",
-                hintStyle: TextStyle(color: Colors.black),
-                enabledBorder: UnderlineInputBorder(
+                hintText: "Email",
+                hintStyle: const TextStyle(color: Colors.black),
+                enabledBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey),
                 ),
               ),
             ),
           ),
-          SizedBox(height: 25),
+          const SizedBox(height: 25),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 40),
+            padding: const EdgeInsets.symmetric(horizontal: 40),
             child: TextField(
+              controller: passwordController,
+              obscureText: true,
               decoration: InputDecoration(
-                prefixIcon: SizedBox(
-                  height: 10,
-                  width: 10,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Icon(
-                      Icons.lock_open_outlined,
-                      color: Colors.yellow[300],
-                    ),
-                  ),
+                prefixIcon: Icon(
+                  Icons.lock_open_outlined,
+                  color: Colors.yellow[300],
                 ),
                 hintText: "Password",
-                hintStyle: TextStyle(color: Colors.black),
-                enabledBorder: UnderlineInputBorder(
+                hintStyle: const TextStyle(color: Colors.black),
+                enabledBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey),
                 ),
               ),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   "Register account",
                   style: TextStyle(
                     fontSize: 30,
@@ -115,49 +119,39 @@ class Register extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: () {
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => ));
-                  },
+                  onTap: _saveUserData,
                   child: ClipOval(
                     child: Container(
                       height: 50,
                       width: 50,
                       decoration: BoxDecoration(color: Colors.blue[300]),
-                      child: Icon(Icons.arrow_forward_ios_outlined),
+                      child: const Icon(Icons.arrow_forward_ios_outlined),
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
             child: Row(
-              // mainAxisAlignment: MainAxisAlignment,
               children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.of(
-                      context,
-                    ).push(MaterialPageRoute(builder: (context) => Register()));
-                  },
-                  child: Text(
-                    "Already have an account ",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w900,
-                    ),
+                const Text(
+                  "Already have an account ",
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w900,
                   ),
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.of(
-                      context,
-                    ).push(MaterialPageRoute(builder: (context) => Signin()));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const Signin()),
+                    );
                   },
-                  child: Text(
+                  child: const Text(
                     "signin",
                     style: TextStyle(
                       fontSize: 20,
@@ -174,4 +168,3 @@ class Register extends StatelessWidget {
     );
   }
 }
-
