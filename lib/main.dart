@@ -5,8 +5,6 @@ void main() {
   runApp(const MyApp());
 }
 
-
-
 // import 'package:flutter/material.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
@@ -110,16 +108,20 @@ void main() {
 //       appBar: AppBar(title: const Text('Profile')),
 //       body: Padding(
 //         padding: const EdgeInsets.all(16),
-//         child: userName == null || email == null
-//             ? const Center(child: CircularProgressIndicator())
-//             : Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Text('Name: $userName', style: const TextStyle(fontSize: 18)),
-//                   const SizedBox(height: 16),
-//                   Text('Email: $email', style: const TextStyle(fontSize: 18)),
-//                 ],
-//               ),
+//         child:
+//             userName == null || email == null
+//                 ? const Center(child: CircularProgressIndicator())
+//                 : Column(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//                     Text(
+//                       'Name: $userName',
+//                       style: const TextStyle(fontSize: 18),
+//                     ),
+//                     const SizedBox(height: 16),
+//                     Text('Email: $email', style: const TextStyle(fontSize: 18)),
+//                   ],
+//                 ),
 //       ),
 //     );
 //   }
