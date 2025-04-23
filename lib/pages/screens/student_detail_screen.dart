@@ -14,23 +14,26 @@ class StudentDetailScreen extends StatelessWidget {
         title: const Text("Student Detail"),
         backgroundColor: Colors.green[100],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ProfilePicture(name: student.name, radius: 50, fontsize: 35),
-            const SizedBox(height: 20),
-            Text(
-              student.name.toUpperCase(),
-              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              student.description,
-              style: const TextStyle(fontSize: 20),
-              textAlign: TextAlign.center,
-            ),
-          ],
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Center(
+          child: Column(
+            children: [
+              ProfilePicture(name: student.name, radius: 50, fontsize: 35),
+              const SizedBox(height: 20),
+              Text(
+                student.name.toUpperCase(),
+                style: const TextStyle(
+                    fontSize: 30, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                student.description,
+                style: const TextStyle(fontSize: 20),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );

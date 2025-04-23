@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:bca_student_app/pages/screens/student_detail_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Student {
@@ -38,9 +39,13 @@ class StudentInfoListViewState extends State<StudentInfoListView> {
     final prefs = await SharedPreferences.getInstance();
     final storedData = prefs.getString('students');
 
-    if (storedData != null) {
-      final List<dynamic> data = json.decode(storedData);
-      students = data.map((json) => Student.fromJson(json)).toList();
+    if (storedData != null && storedData.isNotEmpty) {
+      try {
+        final List<dynamic> data = json.decode(storedData);
+        students = data.map((json) => Student.fromJson(json)).toList();
+      } catch (e) {
+        debugPrint("Error decoding student data: $e");
+      }
     }
 
     setState(() {});
@@ -58,8 +63,7 @@ class StudentInfoListViewState extends State<StudentInfoListView> {
     final nameController = TextEditingController();
     final descController = TextEditingController();
 
-    if (index != null) {
-      // editing
+    if (index != null && index < students.length) {
       nameController.text = students[index].name;
       descController.text = students[index].description;
     }
@@ -148,13 +152,24 @@ class StudentInfoListViewState extends State<StudentInfoListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Lottie.asset(
+              "assets/animation2.json",
+              fit: BoxFit.cover,
+              animate: true,
+              repeat: true,
+            ),
+          ),
           students.isEmpty
               ? const Center(child: Text("No students yet. Tap + to add."))
               : ListView.builder(
+                padding: const EdgeInsets.only(top: 16),
                 itemCount: students.length,
                 itemBuilder: (context, index) {
                   final student = students[index];
+
                   return Card(
                     margin: const EdgeInsets.symmetric(
                       horizontal: 16,
@@ -166,7 +181,7 @@ class StudentInfoListViewState extends State<StudentInfoListView> {
                       title: Text(student.name),
                       subtitle: Text(student.description),
                       trailing: IconButton(
-                        icon: const Icon(Icons.more_vert), // changed from arrow
+                        icon: const Icon(Icons.more_vert),
                         onPressed: () => _showOptions(index),
                       ),
                       onTap: () {
@@ -183,6 +198,8 @@ class StudentInfoListViewState extends State<StudentInfoListView> {
                   );
                 },
               ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton.small(
         onPressed: () => _addOrEditStudentDialog(),
         backgroundColor: Colors.green[100],
