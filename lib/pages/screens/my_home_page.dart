@@ -1,5 +1,6 @@
+import 'package:bca_student_app/pages/screens/api/pages/user_list.dart';
 import 'package:bca_student_app/pages/screens/bottom_nav/bottom_navigation_bar.dart';
-import 'package:bca_student_app/pages/screens/dashboard.dart';
+// import 'package:bca_student_app/pages/screens/dashboard.dart';
 import 'package:bca_student_app/pages/screens/profile.dart';
 import 'package:bca_student_app/pages/screens/student_info_listview.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
+
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   String email = "";
@@ -36,12 +38,13 @@ class _MyHomePageState extends State<MyHomePage> {
       name = prefs.getString('name') ?? "";
 
       _widgetOptions = <Widget>[
-        StudentDashboard(),
+        // StudentDashboard(),
+        UserListScreen(),
         StudentInfoListView(),
-        ProfileScreen(username: name, email: email), 
+        ProfileScreen(username: name, email: email),
       ];
 
-      _isLoading = false; 
+      _isLoading = false;
     });
   }
 
@@ -54,9 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     return Scaffold(
@@ -72,4 +73,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
