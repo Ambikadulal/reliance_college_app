@@ -57,7 +57,7 @@ class _RegisterState extends State<Register> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.blueGrey[100],
+      backgroundColor: Colors.green[100],
       body: Form(
         key: _formKey,
         child: Column(
@@ -70,7 +70,7 @@ class _RegisterState extends State<Register> {
                 "Create Account",
                 style: TextStyle(
                   fontSize: 30,
-                  color: Colors.green[400],
+                  color: Colors.green,
                   fontWeight: FontWeight.w900,
                 ),
               ),

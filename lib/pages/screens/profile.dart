@@ -3,6 +3,7 @@ import 'package:bca_student_app/pages/screens/signin.dart';
 import 'package:bca_student_app/pages/screens/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lottie/lottie.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
@@ -47,89 +48,115 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final bool isLoggedIn = _email.isNotEmpty;
 
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child:
-            isLoggedIn
-                ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundColor: Colors.blue[100],
-                      child: const Icon(
-                        Icons.person,
-                        size: 50,
-                        color: Colors.blue,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      _username.isNotEmpty ? _username : "Welcome!",
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      _email,
-                      style: const TextStyle(fontSize: 16, color: Colors.grey),
-                    ),
-                    const SizedBox(height: 30),
-                    CommonButtonWidget(
-                      buttonText: "Logout",
-                      onPressed: _logout,
-                      bottoncolor: Colors.blue,
-                    ),
-                  ],
-                )
-                : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundColor: Colors.blue[100],
-                      child: const Icon(
-                        Icons.person,
-                        size: 50,
-                        color: Colors.blue,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      "Guest User",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    CommonButtonWidget(
-                      buttonText: "Sign In",
-                      onPressed:
-                          () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Signin(),
-                            ),
-                          ),
-                      bottoncolor: Colors.green,
-                    ),
-                    const SizedBox(height: 10),
-                    CommonButtonWidget(
-                      buttonText: "Register",
-                      onPressed:
-                          () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Register(),
-                            ),
-                          ),
-                      bottoncolor: Colors.lightGreenAccent,
-                    ),
-                  ],
+    return Scaffold(
+      body: Container(
+        color: Colors.green[100],
+        child: Stack(
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: SizedBox(
+                height: 250,
+                child: Lottie.asset(
+                  'assets/profile.json',
+                  repeat: true,
+                  animate: true,
                 ),
+              ),
+            ),
+
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child:
+                    isLoggedIn
+                        ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.blue[100],
+                              child: const Icon(
+                                Icons.person,
+                                size: 50,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              _username.isNotEmpty ? _username : "Welcome!",
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              _email,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            CommonButtonWidget(
+                              buttonText: "Logout",
+                              onPressed: _logout,
+                              bottoncolor: Colors.blue,
+                            ),
+                          ],
+                        )
+                        : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.blue[100],
+                              child: const Icon(
+                                Icons.person,
+                                size: 50,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            const Text(
+                              "Guest User",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            CommonButtonWidget(
+                              buttonText: "Sign In",
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const Signin(),
+                                  ),
+                                );
+                              },
+                              bottoncolor: Colors.green,
+                            ),
+                            const SizedBox(height: 10),
+                            CommonButtonWidget(
+                              buttonText: "Register",
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const Register(),
+                                  ),
+                                );
+                              },
+                              bottoncolor: Colors.lightGreenAccent,
+                            ),
+                          ],
+                        ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

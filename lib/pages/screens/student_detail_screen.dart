@@ -11,7 +11,7 @@ class StudentDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Student Detail"),
+        title: Text("Student Detail"),
         backgroundColor: Colors.green[100],
       ),
       body: SingleChildScrollView(
@@ -24,7 +24,9 @@ class StudentDetailScreen extends StatelessWidget {
               Text(
                 student.name.toUpperCase(),
                 style: const TextStyle(
-                    fontSize: 30, fontWeight: FontWeight.bold),
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(height: 10),
               Text(

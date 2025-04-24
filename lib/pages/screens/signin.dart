@@ -54,7 +54,7 @@ class _SigninState extends State<Signin> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.blueGrey[50],
+      backgroundColor: Colors.green[100],
       body: Form(
         key: _formKey,
         child: Column(
@@ -65,7 +65,7 @@ class _SigninState extends State<Signin> {
               "Welcome Back 👋",
               style: TextStyle(
                 fontSize: 32,
-                color: Colors.deepPurple,
+                color: Colors.green,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -79,10 +79,7 @@ class _SigninState extends State<Signin> {
                   controller: _emailController,
                   validator: (value) => validateEmail(value),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.email_outlined,
-                      color: Colors.deepPurple,
-                    ),
+                    prefixIcon: Icon(Icons.email_outlined, color: Colors.green),
                     hintText: "Email address",
                     hintStyle: TextStyle(color: Colors.grey[700]),
                     filled: true,
@@ -112,10 +109,7 @@ class _SigninState extends State<Signin> {
                   //   return null;
                   // },
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.lock_outline,
-                      color: Colors.deepPurple,
-                    ),
+                    prefixIcon: Icon(Icons.lock_outline, color: Colors.green),
                     hintText: "Password",
                     hintStyle: TextStyle(color: Colors.grey[700]),
                     filled: true,
@@ -138,7 +132,7 @@ class _SigninState extends State<Signin> {
                     "Sign in",
                     style: TextStyle(
                       fontSize: 26,
-                      color: Colors.black87,
+                      color: Colors.green[700],
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -158,7 +152,7 @@ class _SigninState extends State<Signin> {
                     },
                     child: CircleAvatar(
                       radius: 25,
-                      backgroundColor: Colors.deepPurple[300],
+                      backgroundColor: Colors.green,
                       child: const Icon(
                         Icons.arrow_forward_ios_outlined,
                         color: Colors.white,
@@ -186,7 +180,7 @@ class _SigninState extends State<Signin> {
                       "Register",
                       style: TextStyle(
                         fontSize: 18,
-                        color: Colors.green[600],
+                        color: Colors.green,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

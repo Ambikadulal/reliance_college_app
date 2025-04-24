@@ -152,6 +152,7 @@ class StudentInfoListViewState extends State<StudentInfoListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.green[100],
       body: Stack(
         children: [
           Positioned.fill(
@@ -171,17 +172,25 @@ class StudentInfoListViewState extends State<StudentInfoListView> {
                   final student = students[index];
 
                   return Card(
+                    color: Colors.brown[100],
                     margin: const EdgeInsets.symmetric(
                       horizontal: 16,
                       vertical: 8,
                     ),
                     elevation: 10,
                     child: ListTile(
-                      leading: CircleAvatar(child: Text('${index + 1}')),
+                      leading: CircleAvatar(
+                        backgroundColor: Colors.indigo[300],
+                        child: Text(
+                          '${index + 1}',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
                       title: Text(student.name),
                       subtitle: Text(student.description),
                       trailing: IconButton(
                         icon: const Icon(Icons.more_vert),
+                        color: Colors.white,
                         onPressed: () => _showOptions(index),
                       ),
                       onTap: () {
