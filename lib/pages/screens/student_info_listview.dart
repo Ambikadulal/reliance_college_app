@@ -1,71 +1,193 @@
+import 'dart:convert';
+import 'package:bca_student_app/pages/screens/student_detail_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Student {
   final String name;
-  final int age;
-  final String id;
+  final String description;
 
-  Student({required this.name, required this.age, required this.id});
+  Student({required this.name, required this.description});
 
   factory Student.fromJson(Map<String, dynamic> json) {
-    return Student(name: json['name'], age: json['age'], id: json['id']);
+    return Student(name: json['name'], description: json['description']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'name': name, 'description': description};
   }
 }
 
-class StudentInfoListView extends StatelessWidget {
+class StudentInfoListView extends StatefulWidget {
   const StudentInfoListView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // List of students
-    final List<Map<String, dynamic>> studentJsonList = [
-      {"id": "1", "name": "Bhupendra Bahadur Shahi", "age": 20},
-      {"id": "2", "name": "Bibek Poudel", "age": 21},
-      {"id": "3", "name": "Bishal Tamang", "age": 22},
-      {"id": "4", "name": "Dipesh Shrestha", "age": 23},
-      {"id": "5", "name": "Gautam Ghale", "age": 20},
-      {"id": "6", "name": "Jasmin KC", "age": 21},
-      {"id": "7", "name": "Karma Bhote", "age": 22},
-      {"id": "8", "name": "Krinisha Shrestha", "age": 23},
-      {"id": "9", "name": "Mandip Kafle", "age": 20},
-      {"id": "10", "name": "Manish Bastakoti", "age": 21},
-      {"id": "11", "name": "Nutan Kafle", "age": 22},
-      {"id": "12", "name": "Prabesh Shrestha", "age": 23},
-      {"id": "13", "name": "Pranaya Shrestha", "age": 20},
-      {"id": "14", "name": "Prashant Giri", "age": 21},
-      {"id": "15", "name": "Pratik Khadka", "age": 22},
-      {"id": "16", "name": "Pukar Rai", "age": 23},
-      {"id": "17", "name": "Roshan Gurung", "age": 20},
-      {"id": "18", "name": "Siddhanta Kumar Yadav", "age": 21},
-      {"id": "19", "name": "Sudeep Limbu", "age": 22},
-      {"id": "20", "name": "Sushil Kafle", "age": 23},
-      {"id": "21", "name": "Tulman Tamang", "age": 20},
-    ];
+  StudentInfoListViewState createState() => StudentInfoListViewState();
+}
 
-    final List<Student> students =
-        studentJsonList.map((json) => Student.fromJson(json)).toList();
+class StudentInfoListViewState extends State<StudentInfoListView> {
+  List<Student> students = [];
 
-    return ListView.builder(
-      itemCount: students.length,
-      itemBuilder: (context, index) {
-        final student = students[index];
+  @override
+  void initState() {
+    super.initState();
+    _loadStudents();
+  }
 
-        return Card(
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          elevation: 4,
-          child: ListTile(
-            leading: CircleAvatar(child: Text(student.id)),
-            title: Text(student.name),
-            subtitle: Text('Age: ${student.age}'),
-            trailing: const Icon(Icons.arrow_forward),
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('${student.name} has been tapped!')),
-              );
-            },
+  Future<void> _loadStudents() async {
+    final prefs = await SharedPreferences.getInstance();
+    final storedData = prefs.getString('students');
+
+    if (storedData != null) {
+      final List<dynamic> data = json.decode(storedData);
+      students = data.map((json) => Student.fromJson(json)).toList();
+    }
+
+    setState(() {});
+  }
+
+  Future<void> _saveToPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String encodedData = json.encode(
+      students.map((s) => s.toJson()).toList(),
+    );
+    await prefs.setString('students', encodedData);
+  }
+
+  Future<void> _addOrEditStudentDialog({int? index}) async {
+    final nameController = TextEditingController();
+    final descController = TextEditingController();
+
+    if (index != null) {
+      // editing
+      nameController.text = students[index].name;
+      descController.text = students[index].description;
+    }
+
+    await showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: Text(index == null ? "Add Student" : "Edit Student"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: nameController,
+                  decoration: const InputDecoration(labelText: "Name"),
+                ),
+                TextField(
+                  controller: descController,
+                  decoration: const InputDecoration(labelText: "Description"),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text("Cancel"),
+              ),
+              TextButton(
+                onPressed: () {
+                  final name = nameController.text.trim();
+                  final desc = descController.text.trim();
+                  if (name.isNotEmpty && desc.isNotEmpty) {
+                    setState(() {
+                      if (index == null) {
+                        students.add(Student(name: name, description: desc));
+                      } else {
+                        students[index] = Student(
+                          name: name,
+                          description: desc,
+                        );
+                      }
+                    });
+                    _saveToPrefs();
+                  }
+                  Navigator.pop(context);
+                },
+                child: const Text("OK"),
+              ),
+            ],
           ),
-        );
-      },
+    );
+  }
+
+  void _showOptions(int index) {
+    showModalBottomSheet(
+      context: context,
+      builder:
+          (context) => SafeArea(
+            child: Wrap(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.edit),
+                  title: const Text('Edit'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _addOrEditStudentDialog(index: index);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.delete),
+                  title: const Text('Delete'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    setState(() {
+                      students.removeAt(index);
+                    });
+                    _saveToPrefs();
+                  },
+                ),
+              ],
+            ),
+          ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body:
+          students.isEmpty
+              ? const Center(child: Text("No students yet. Tap + to add."))
+              : ListView.builder(
+                itemCount: students.length,
+                itemBuilder: (context, index) {
+                  final student = students[index];
+                  return Card(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    elevation: 10,
+                    child: ListTile(
+                      leading: CircleAvatar(child: Text('${index + 1}')),
+                      title: Text(student.name),
+                      subtitle: Text(student.description),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.more_vert), // changed from arrow
+                        onPressed: () => _showOptions(index),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) =>
+                                    StudentDetailScreen(student: student),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+      floatingActionButton: FloatingActionButton.small(
+        onPressed: () => _addOrEditStudentDialog(),
+        backgroundColor: Colors.green[100],
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

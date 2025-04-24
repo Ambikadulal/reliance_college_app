@@ -141,9 +141,7 @@ class _SigninState extends State<Signin> {
 
                       Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
-                          builder:
-                              (context) =>
-                                  MyHomePage(title: "Bca app", initialTab: 2),
+                          builder: (context) => MyHomePage(title: "Bca app"),
                         ),
                         (route) => false,
                       );
