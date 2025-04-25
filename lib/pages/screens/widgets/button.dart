@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 class CommonButtonWidget extends StatelessWidget {
   final String buttonText;
-  final Color buttonColor;
+  final GestureTapCallback? onPressed;
   const CommonButtonWidget({
     super.key,
     required this.buttonText,
-    required this.buttonColor,
+    this.onPressed,
+    required MaterialAccentColor buttonColor,
   });
 
   @override
@@ -15,11 +16,9 @@ class CommonButtonWidget extends StatelessWidget {
       width: double.infinity,
       height: 50,
       child: ElevatedButton(
-        onPressed: () {
-          // Handle Register
-        },
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: buttonColor,
+          backgroundColor: Colors.blue,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
