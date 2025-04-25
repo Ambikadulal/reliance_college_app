@@ -172,7 +172,7 @@ class StudentInfoListViewState extends State<StudentInfoListView> {
                   final student = students[index];
 
                   return Card(
-                    color: Colors.brown[100],
+                    color: const Color.fromARGB(176, 239, 235, 233),
                     margin: const EdgeInsets.symmetric(
                       horizontal: 16,
                       vertical: 8,

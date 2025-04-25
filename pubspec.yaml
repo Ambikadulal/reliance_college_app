@@ -68,6 +68,7 @@ flutter:
     - assets/student.json
     - assets/animation2.json
     - assets/profile.json
+    - assets/images/profile.jpg
     # - lib/images/profile_background.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
