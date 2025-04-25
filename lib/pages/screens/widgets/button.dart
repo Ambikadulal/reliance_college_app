@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class CommonButtonWidget extends StatelessWidget {
   final String buttonText;
   final GestureTapCallback onTap;
+  final Color buttonColor;
   const CommonButtonWidget({
-    super.key,
-    required this.buttonText,
-    required this.onTap,
+    super.key, required this.buttonText, required this.onTap, required this.buttonColor,
+  
   });
 
   @override
@@ -17,7 +17,8 @@ class CommonButtonWidget extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromARGB(255, 225, 18, 201),
+          backgroundColor:buttonColor,
+          //  const Color.fromARGB(255, 225, 18, 201),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
