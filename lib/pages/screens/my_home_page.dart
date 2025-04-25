@@ -6,7 +6,7 @@ import 'package:bca_student_app/pages/screens/student_info_listview.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key, required this.title}); 
   final String title;
 
   @override

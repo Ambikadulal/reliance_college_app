@@ -34,23 +34,35 @@ class _RegisterState extends State<Register> {
 
   final _formkey = GlobalKey<FormState>();
 
+  String? validateEmail(String? value) {
+    const pattern = r"(?:[a-z0-9!#$%&'+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'+/=?^_`{|}~-]+)*|"
+        r'"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b'
+        r'\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9]'
+        r'(?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}'
+        r'(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08'
+        r'\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])';
+    final regex = RegExp(pattern);
+
+    return value!.isEmpty || !regex.hasMatch(value)
+        ? 'Enter a valid email address'
+        : null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter a password';
+    } else if (value.length < 6) {
+      return 'Password must be at least 6 characters long';
+    } else if (!RegExp(r'[A-Za-z]').hasMatch(value)) {
+      return 'Password must contain at least one letter';
+    } else if (!RegExp(r'\d').hasMatch(value)) {
+      return 'Password must contain at least one number';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
-    String? validateEmail(String? value) {
-      const pattern = r"(?:[a-z0-9!#$%&'+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"+
-          r'+/=?^_`{|}~-]+)|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'
-          r'\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])")@(?:(?:[a-z0-9](?:[a-z0-9-]'
-          r'[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-][a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4]'
-          r'[0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9]'
-          r'[0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f'
-          r'\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])';
-      final regex = RegExp(pattern);
-
-      return value!.isEmpty || !regex.hasMatch(value)
-          ? 'Enter a valid email address'
-          : null;
-    }
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: Form(
@@ -100,7 +112,7 @@ class _RegisterState extends State<Register> {
                   if (value == null || value.isEmpty) {
                     return 'Please enter an email';
                   }
-                  return null;
+                  return validateEmail(value);
                 },
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.email_outlined, color: navyBlue),
@@ -117,7 +129,8 @@ class _RegisterState extends State<Register> {
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: TextFormField(
                 controller: _passwordController,
-                validator: (value) => validateEmail(value),
+                obscureText: true,
+                validator: (value) => validatePassword(value),
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.lock_open_outlined, color: navyBlue),
                   hintText: "Password",

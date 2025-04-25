@@ -7,9 +7,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
     super.key,
-    required String email,
-    required String username,
+    required this.email,
+    required this.username,
   });
+
+  final String email;
+  final String username;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -28,8 +31,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _username = prefs.getString('username') ?? "";
-      _email = prefs.getString('email') ?? "";
+      _username = prefs.getString('username') ?? widget.username;
+      _email = prefs.getString('email') ?? widget.email;
     });
   }
 
@@ -41,18 +44,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _username = "";
       _email = "";
     });
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil('/signin', (route) => false);
   }
 
   @override
   Widget build(BuildContext context) {
     final bool isLoggedIn = _email.isNotEmpty;
 
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child:
-            isLoggedIn
-                ? Column(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: isLoggedIn
+              ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CircleAvatar(
@@ -66,7 +72,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      _username.isNotEmpty ? _username : "Welcome!",
+                      _username.isNotEmpty ? _username : 'Welcome!',
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -74,18 +80,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     Text(
                       _email,
-                      style: const TextStyle(fontSize: 16, color: Colors.grey),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                      ),
                     ),
                     const SizedBox(height: 30),
                     CommonButtonWidget(
-                      buttonText: "Logout",
-                       
-                      onTap: () {},
+                      buttonText: 'Logout',
+                      onTap: _logout,
                       buttonColor: Colors.cyan,
                     ),
                   ],
                 )
-                : Column(
+              : Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CircleAvatar(
@@ -99,7 +107,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     const SizedBox(height: 10),
                     const Text(
-                      "Guest User",
+                      'Guest User',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -107,31 +115,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     const SizedBox(height: 20),
                     CommonButtonWidget(
-                      buttonText: "Sign In",
+                      buttonText: 'Sign In',
                       onTap: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Signin(),
-                          ) );
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Signin(),
+                          ),
+                        );
                       },
-                      buttonColor: Colors.red,
+                      buttonColor: const Color.fromARGB(255, 4, 71, 137),
                     ),
                     const SizedBox(height: 10),
                     CommonButtonWidget(
-                      buttonText: "Register",
-                  
+                      buttonText: 'Register',
                       onTap: () {
-                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Register(),
-                          ) );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Register(),
+                          ),
+                        );
                       },
-                      buttonColor: Colors.blue,
+                      buttonColor: const Color.fromARGB(255, 4, 71, 137),
                     ),
                   ],
                 ),
+        ),
       ),
     );
   }
