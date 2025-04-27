@@ -1,243 +1,261 @@
 import 'dart:convert';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
   @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
+  _DashboardScreenState createState() => _DashboardScreenState();
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  late Future<int> _totalStudents;
-  late Future<int> _totalCourses;
-  late Future<List<String>> _latestNotices;
-  int attendancePercent = 0;
+  List<dynamic> users = [];
+  bool isLoading = true;
+  int eventsCount = 0;
 
   @override
   void initState() {
     super.initState();
-    _totalStudents = fetchTotalStudents();
-    _totalCourses = fetchTotalCourses();
-    _latestNotices = fetchLatestNotices();
-    attendancePercent = Random().nextInt(41) + 60; // Random between 60–100
+    _fetchUsers();
+    _loadEventCount();
   }
 
-  Future<int> fetchTotalStudents() async {
+  Future<void> _fetchUsers() async {
     final response = await http.get(
-      Uri.parse("https://jsonplaceholder.typicode.com/users"),
+      Uri.parse('https://jsonplaceholder.typicode.com/users'),
     );
     if (response.statusCode == 200) {
-      final List decoded = jsonDecode(response.body);
-      return decoded.length;
+      setState(() {
+        users = json.decode(response.body);
+        isLoading = false;
+      });
     } else {
-      throw Exception("Failed to load students");
+      throw Exception('Failed to load users');
     }
   }
 
-  Future<int> fetchTotalCourses() async {
-    final response = await http.get(
-      Uri.parse("https://fakestoreapi.com/products"),
-    );
-    if (response.statusCode == 200) {
-      final List decoded = jsonDecode(response.body);
-      return decoded.length; // Pretend these are courses
-    } else {
-      throw Exception("Failed to load courses");
-    }
-  }
-
-  Future<List<String>> fetchLatestNotices() async {
-    final response = await http.get(
-      Uri.parse("https://jsonplaceholder.typicode.com/posts"),
-    );
-    if (response.statusCode == 200) {
-      final List decoded = jsonDecode(response.body);
-      return decoded.take(3).map<String>((e) => e['title'] as String).toList();
-    } else {
-      throw Exception("Failed to load notices");
-    }
+  Future<void> _loadEventCount() async {
+    final prefs = await SharedPreferences.getInstance();
+    final eventsJson = prefs.getStringList('events') ?? [];
+    setState(() {
+      eventsCount = eventsJson.length;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final Color cardColor = Colors.white;
+    final TextStyle titleStyle = const TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: Colors.black87,
+    );
+    final TextStyle numberStyle = const TextStyle(
+      fontSize: 24,
+      fontWeight: FontWeight.bold,
+      color: Color(0xFF4F46E5),
+    );
+
+    final String today = DateFormat('MMMM dd, yyyy').format(DateTime.now());
+
     return Scaffold(
-      backgroundColor: Colors.grey[100],
-      appBar: AppBar(
-        title: const Text("Dashboard"),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black87,
-        elevation: 0.5,
-      ),
-      body: Padding(
+      backgroundColor: const Color.fromARGB(255, 243, 243, 243),
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        child: AnimationLimiter(
-          child: FutureBuilder(
-            future: Future.wait([
-              _totalStudents,
-              _totalCourses,
-              _latestNotices,
-            ]),
-            builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: Lottie.asset('assets/loading.json', width: 150),
-                );
-              } else if (snapshot.hasError) {
-                return Center(child: Text("Error: ${snapshot.error}"));
-              }
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildHeader(today),
+            const SizedBox(height: 24),
+            _buildSummaryCards(cardColor, titleStyle, numberStyle),
+            const SizedBox(height: 24),
+            if (isLoading) _buildLoadingIndicator() else _buildUsersList(),
+          ],
+        ),
+      ),
+    );
+  }
 
-              final totalStudents = snapshot.data![0] as int;
-              final totalCourses = snapshot.data![1] as int;
-              final latestNotices = snapshot.data![2] as List<String>;
+  Widget _buildHeader(String today) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Welcome back, Admin!',
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              today,
+              style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 
-              return GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: 1.1,
-                children: [
-                  _buildCard(
-                    title: "Total Students",
-                    value: totalStudents.toString(),
-                    icon: Icons.school,
-                    color: Colors.blueAccent,
+  Widget _buildSummaryCards(
+    Color cardColor,
+    TextStyle titleStyle,
+    TextStyle numberStyle,
+  ) {
+    return GridView.count(
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      mainAxisSpacing: 16,
+      crossAxisSpacing: 16,
+      children: [
+        _buildDashboardCard(
+          'Total Students',
+          users.length.toString(),
+          Icons.people,
+          Colors.blue,
+        ),
+        _buildDashboardCard(
+          'New Admissions',
+          '15',
+          Icons.person_add,
+          Colors.green,
+        ),
+        _buildDashboardCard('Classes', '8', Icons.class_, Colors.orange),
+        _buildDashboardCard(
+          'Events',
+          eventsCount.toString(),
+          Icons.event,
+          Colors.purple,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDashboardCard(
+    String title,
+    String number,
+    IconData icon,
+    Color iconColor,
+  ) {
+    return Card(
+      elevation: 1,
+      color: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 32, color: iconColor),
+            const SizedBox(height: 12),
+            Text(
+              number,
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              title,
+              style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoadingIndicator() {
+    return Center(child: CircularProgressIndicator());
+  }
+
+  Widget _buildUsersList() {
+    return Column(
+      children: [
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: users.length,
+          itemBuilder: (context, index) {
+            final user = users[index];
+            return Container(
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
                   ),
-                  _buildCard(
-                    title: "Total Courses",
-                    value: totalCourses.toString(),
-                    icon: Icons.book,
-                    color: Colors.deepPurpleAccent,
-                  ),
-                  _buildCard(
-                    title: "Today's Attendance",
-                    value: "$attendancePercent%",
-                    icon: Icons.check_circle,
-                    color: Colors.green,
-                  ),
-                  _buildNoticesCard(latestNotices),
                 ],
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCard({
-    required String title,
-    required String value,
-    required IconData icon,
-    required Color color,
-  }) {
-    return AnimationConfiguration.staggeredGrid(
-      position: Random().nextInt(20),
-      columnCount: 2,
-      duration: const Duration(milliseconds: 500),
-      child: FadeInAnimation(
-        child: SlideAnimation(
-          horizontalOffset: 50,
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 8,
-                  offset: Offset(2, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CircleAvatar(
-                  backgroundColor: color.withOpacity(0.1),
-                  child: Icon(icon, color: color),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  title,
-                  style: const TextStyle(fontSize: 14, color: Colors.black54),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  value,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+              ),
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 24,
+                    backgroundColor: Colors.indigo.withOpacity(0.2),
+                    child: const Icon(Icons.person, color: Colors.indigo),
                   ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNoticesCard(List<String> notices) {
-    return AnimationConfiguration.staggeredGrid(
-      position: Random().nextInt(20),
-      columnCount: 2,
-      duration: const Duration(milliseconds: 500),
-      child: FadeInAnimation(
-        child: SlideAnimation(
-          verticalOffset: 50,
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 8,
-                  offset: Offset(2, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const CircleAvatar(
-                  backgroundColor: Color(0xFFE0F7FA),
-                  child: Icon(Icons.notifications, color: Colors.teal),
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  "Latest Notices",
-                  style: TextStyle(fontSize: 14, color: Colors.black54),
-                ),
-                const SizedBox(height: 8),
-                ...notices.map(
-                  (notice) => Padding(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    child: Text(
-                      "- $notice",
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.black87,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          user['name'],
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          user['email'],
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          user['company']['name'],
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                            fontStyle: FontStyle.italic,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
+                ],
+              ),
+            );
+          },
         ),
-      ),
+      ],
     );
   }
 }

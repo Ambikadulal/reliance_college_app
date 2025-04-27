@@ -1,14 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:bca_student_app/pages/screens/dashboard_screen.dart';
+import 'package:bca_student_app/pages/screens/dashboard.dart';
 import 'package:bca_student_app/pages/screens/events_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:bca_student_app/pages/screens/student_info_listview.dart';
 import 'package:bca_student_app/pages/screens/profile.dart';
 import 'package:bca_student_app/pages/screens/bottom_nav/bottom_navigation_bar.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
-
-  // final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -18,10 +16,10 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   static final List<Widget> _widgetOptions = <Widget>[
-    DashboardScreen(), // index 0
-    EventScreen(), // index 1
-    StudentInfoListView(), // index 2
-    ProfileScreen(), // index 3
+    DashboardScreen(),
+    EventScreen(),
+    StudentInfoListView(),
+    ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -42,7 +40,6 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: const Icon(Icons.notifications),
             tooltip: 'Notifications',
             onPressed: () {
-              // Add your notification logic here
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Notifications clicked!')),
               );
@@ -52,7 +49,6 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: const Icon(Icons.settings),
             tooltip: 'Settings',
             onPressed: () {
-              // Add your settings logic here
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Settings clicked!')),
               );

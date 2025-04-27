@@ -159,11 +159,15 @@ class StudentInfoListViewState extends State<StudentInfoListView> {
                     final student = students[index];
                     return AnimationConfiguration.staggeredList(
                       position: index,
+
                       duration: const Duration(milliseconds: 500),
                       child: SlideAnimation(
                         verticalOffset: 50.0,
                         child: FadeInAnimation(
                           child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             color: Colors.white,
                             margin: const EdgeInsets.symmetric(
                               horizontal: 16,
