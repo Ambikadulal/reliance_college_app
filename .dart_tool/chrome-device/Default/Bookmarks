@@ -1,0 +1,83 @@
+{
+   "checksum": "6e5b0642cb073a76c8c81282e5b5cfa7",
+   "roots": {
+      "bookmark_bar": {
+         "children": [ {
+            "date_added": "13320493847515149",
+            "date_last_used": "0",
+            "guid": "4a8e7ee1-5d69-4ebb-a492-84e87e2649a4",
+            "id": "11",
+            "name": "Login or Sign up | Aternos | Free Minecraft Server",
+            "show_icon": false,
+            "source": "sync",
+            "type": "url",
+            "url": "https://aternos.org/go/",
+            "visit_count": 0
+         }, {
+            "children": [ {
+               "date_added": "13274495735204873",
+               "date_last_used": "0",
+               "guid": "f93d69ea-80ff-4078-ba66-eac3c57e9abc",
+               "id": "13",
+               "name": "Lenovo Support",
+               "show_icon": false,
+               "source": "import_fre",
+               "type": "url",
+               "url": "http://support.lenovo.com/",
+               "visit_count": 0
+            }, {
+               "date_added": "13274495735220500",
+               "date_last_used": "0",
+               "guid": "10c2e9c5-2d68-40cc-a4b2-6401c1f13d62",
+               "id": "14",
+               "name": "Lenovo",
+               "show_icon": false,
+               "source": "import_fre",
+               "type": "url",
+               "url": "http://www.lenovo.com/",
+               "visit_count": 0
+            } ],
+            "date_added": "13388641052333157",
+            "date_last_used": "0",
+            "date_modified": "0",
+            "guid": "eb5d412e-eb64-44dc-826e-f1a5044b8073",
+            "id": "12",
+            "name": "Lenovo",
+            "source": "unknown",
+            "type": "folder"
+         } ],
+         "date_added": "13388641047520788",
+         "date_last_used": "0",
+         "date_modified": "13320493847515149",
+         "guid": "0bc5d13f-2cba-5d74-951f-3f233fe6c908",
+         "id": "1",
+         "name": "Favorites bar",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "other": {
+         "children": [  ],
+         "date_added": "13388641047520790",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "82b081ec-3dd3-529c-8475-ab6c344590dd",
+         "id": "2",
+         "name": "Other favorites",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "synced": {
+         "children": [  ],
+         "date_added": "13388641047520791",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "4cf2e351-0e85-532b-bb37-df045d8f8d0f",
+         "id": "3",
+         "name": "Mobile favorites",
+         "source": "unknown",
+         "type": "folder"
+      }
+   },
+   "sync_metadata": "CjEKDgiIgQISCMhZNnyWAQAAEgAqGFhkcWgzVjVRUHpzYi9BYXlxbmRMUlE9PUgDoAYEEqwBCA4SpwEKHE1XNUl0OXo0R1g3VHI2RExZWG9OeWd5WS9XMD0SJDEwYzJlOWM1LTJkNjgtNDBjYy1hNGIyLTY0MDFjMWYxM2Q2MhgAIAAoADDDpOrU4zA4wqXq1OMwQMKl6tTjMEocSFZVdFpEaTFRMnhyRnRsdklEWURzL0o1RTRvPVoeIhxVM09BVnk5NFJ3WS9DN1BiVnIyNEVTV0piQ0E9ZQAAAADCPgJgAhKsAQgNEqcBChxuV2o1VDQ3MVZDWHphUW1LL2hyQ1FmUlNRQkE9EiRmOTNkNjllYS04MGZmLTQwNzgtYmE2Ni1lYWMzYzU3ZTlhYmMYACAAKAAwwqTq1OMwOKOl6tTjMECjperU4zBKHDNiUWR1cWh2YmZYVHlYTWpaT1dLcW5zZklobz1aHiIcQkJ2RmMyb2pSeGEzN2ZYakNDNC96aThBbUwwPWUAAAAAwj4CYAISrAEIDBKnAQoccitmZnRLaWZDU1UwbWxPdU5hcnNNTDZyQUdNPRIkZWI1ZDQxMmUtZWI2NC00NGRjLTgyNmUtZjFhNTA0NGI4MDczGAAgACgAMMGk6tTjMDiEperU4zBAhKXq1OMwShxrRFhZRHR4ZjlUZnJtMUZSL0JZNWhialN4SVU9Wh4iHFhuWmsySDhxNWZVcjQzaUxHYW80aksyNU5vZz1lAAAAAMI+AmAAEo4BCAESiQEKHHl4Si82ZnZrZWNyN2twNUVRekI0dFdMcGRiRT0SJDk0NDgxNzI0LTdkNDAtNTIwMy1iMDUyLTQ5ZWU0YWU4ZDc4YhgAIAAoADDNnejA1DA4oKHowNQwQKCh6MDUMEocYVJDV0xnaEY5YjVJbnFLSUR2dUovanZRa0ZjPVoAZQAAAADCPgJgABKsAQgLEqcBChxYbW1zalVYanUwdDhyaVp4MjlwaTRWZ3pGb009EiQ0YThlN2VlMS01ZDY5LTRlYmItYTQ5Mi04NGU4N2UyNjQ5YTQYACAAKAAwseup2+cyOOHx3dTjMECx66nb5zJKHFZLTEhhQ3NrSE4vU0tNYUltSXo5NXFnMTY1Zz1aHiIcQWUxMFBKdU1uK2xlRXFUODNHT2dvWFF1eTVjPWVL0gvwwj4CYAUSjgEIAhKJAQocWWNTVG9udkVTUHdxQ3M0TDJjclZodjY4TDk4PRIkY2ZjZmQ4OGUtNGIyOC01MmE4LTllMDEtODYyMmZhZTZmYTUwGAAgACgAMM6d6MDUMDi/oejA1DBAv6HowNQwShxvUFZraHdCUmJWNjVLQ1dSMitJT05IV29PdTg9WgBlAAAAAMI+AmAAEo4BCAMSiQEKHG5qZ0R1ODhlQ3J2WHA4NnBEN2ZIR2NxRnA4OD0SJDQ0NDFhYTkzLTE1ODQtNWNlNy1iNWU1LTMwMWIzYjFhMzMyMhgAIAAoADDTnejA1DA4iqPowNQwQIqj6MDUMEoceXpOQjAxY241NEE3Y1JVMHVUKy9QZ21UdFVvPVoAZQAAAADCPgJgADAAOAA=",
+   "version": 1
+}
