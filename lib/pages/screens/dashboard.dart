@@ -10,7 +10,6 @@ class StudentDashboard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Section: Today's Schedule
           _sectionTitle("📅 Today's Schedule"),
           _buildCard(
             icon: Icons.computer,
@@ -25,9 +24,8 @@ class StudentDashboard extends StatelessWidget {
             color: Colors.green.shade100,
           ),
 
-          const SizedBox(height: 10),
+          const SizedBox(height: 16),
 
-          // Section: Announcements
           _sectionTitle("📢 Important Announcements"),
           _buildCard(
             icon: Icons.announcement,
@@ -36,9 +34,8 @@ class StudentDashboard extends StatelessWidget {
             color: Colors.orange.shade100,
           ),
 
-          const SizedBox(height: 10),
+          const SizedBox(height: 16),
 
-          // Section: Assignments
           _sectionTitle("📝 Upcoming Assignments"),
           _buildCard(
             icon: Icons.assignment,
@@ -47,15 +44,13 @@ class StudentDashboard extends StatelessWidget {
             color: Colors.purple.shade100,
           ),
 
-          const SizedBox(height: 10),
+          const SizedBox(height: 16),
 
-          // Section: Attendance Summary
           _sectionTitle("📊 Attendance Summary"),
           _buildAttendanceProgress(0.92, "92% Attendance"),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
 
-          // Section: Leaderboard
           _sectionTitle("🏆 Leaderboard"),
           _buildCard(
             icon: Icons.emoji_events,
@@ -68,10 +63,9 @@ class StudentDashboard extends StatelessWidget {
     );
   }
 
-  // Helper function to create section titles
   Widget _sectionTitle(String title) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Text(
         title,
         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -79,7 +73,6 @@ class StudentDashboard extends StatelessWidget {
     );
   }
 
-  // Helper function to create reusable Cards
   Widget _buildCard({
     required IconData icon,
     required String title,
@@ -88,29 +81,32 @@ class StudentDashboard extends StatelessWidget {
   }) {
     return Card(
       color: color,
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      margin: const EdgeInsets.symmetric(vertical: 6),
       child: ListTile(
-        leading: Icon(icon, color: Colors.black54),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        leading: Icon(icon, size: 30, color: Colors.black87),
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
         subtitle: Text(subtitle),
       ),
     );
   }
 
-  // Attendance Progress Bar
   Widget _buildAttendanceProgress(double value, String label) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        LinearProgressIndicator(
-          value: value,
-          color: Colors.green,
-          backgroundColor: Colors.grey.shade300,
-          minHeight: 8,
+        ClipRRect(
+          borderRadius: BorderRadius.circular(4),
+          child: LinearProgressIndicator(
+            value: value,
+            color: Colors.green,
+            backgroundColor: Colors.grey.shade300,
+            minHeight: 10,
+          ),
         ),
-        const SizedBox(height: 5),
-        Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+        const SizedBox(height: 6),
+        Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
       ],
     );
   }

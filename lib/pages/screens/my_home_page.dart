@@ -1,4 +1,3 @@
-import 'package:bca_student_app/pages/screens/api/pages/user_list.dart';
 import 'package:bca_student_app/pages/screens/bottom_nav/bottom_navigation_bar.dart';
 import 'package:bca_student_app/pages/screens/dashboard.dart';
 import 'package:bca_student_app/pages/screens/profile.dart';
@@ -14,25 +13,14 @@ class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
-
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
-
-  static List<Widget> _widgetOptions = <Widget>[
-    StudentDashboard(),
-    StudentInfoListView(),
-    ProfileScreen(),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   String email = "";
   String name = "";
   bool isLoggedIn = false;
+  bool _isLoading = true; // ✅ Loading flag
+
+  late List<Widget> _widgetOptions;
 
   @override
   void initState() {
@@ -46,21 +34,31 @@ class _MyHomePageState extends State<MyHomePage> {
       isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
       email = prefs.getString('email') ?? "";
       name = prefs.getString('name') ?? "";
-      _buildWidgetOptions();
+
+      _widgetOptions = <Widget>[
+        StudentDashboard(),
+        StudentInfoListView(),
+        ProfileScreen(username: name, email: email), 
+      ];
+
+      _isLoading = false; 
     });
   }
 
-  void _buildWidgetOptions() {
-    _widgetOptions = <Widget>[
-      // StudentDashboard(),
-      UserListScreen(),
-      StudentInfoListView(),
-      ProfileScreen(),
-    ];
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       drawer: Drawer(
         child: ListView(
@@ -94,7 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: Center(child: _widgetOptions[_selectedIndex]),
-
       bottomNavigationBar: BottomNavigationBarExample(
         selectedIndex: _selectedIndex,
         onItemTapped: _onItemTapped,
@@ -102,3 +99,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
