@@ -1,7 +1,12 @@
 # bca_student_app
 
 A new Flutter project.
+<<<<<<< HEAD
+// UPDATE ts file in project
+///test
+=======
 //TODO: update this file as yoyr project
+>>>>>>> b86d614ac47e81c2bfc804f22975dc555a4ca307
 ## Getting Started
 
 This project is a starting point for a Flutter application.
