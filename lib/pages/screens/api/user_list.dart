@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserListScreen extends StatefulWidget {
   const UserListScreen({super.key});
@@ -40,10 +41,7 @@ class _UserListScreenState extends State<UserListScreen>
           begin: const Offset(0.0, 0.5),
           end: Offset.zero,
         ).animate(
-          CurvedAnimation(
-            parent: controller,
-            curve: Curves.elasticOut, // bounce effect
-          ),
+          CurvedAnimation(parent: controller, curve: Curves.elasticOut),
         );
 
         _controllers.add(controller);
@@ -66,6 +64,31 @@ class _UserListScreenState extends State<UserListScreen>
       controller.dispose();
     }
     super.dispose();
+  }
+
+  Future<void> _addUserToLocal(User user) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<String> existing = prefs.getStringList('added_users') ?? [];
+
+    String encodedUser = jsonEncode({
+      'id': user.id,
+      'name': user.name,
+      'email': user.email,
+    });
+
+    if (!existing.contains(encodedUser)) {
+      existing.add(encodedUser);
+      await prefs.setStringList('added_users', existing);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${user.name} added successfully!')),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('${user.name} is already added.')));
+    }
   }
 
   @override
@@ -153,6 +176,15 @@ class _UserListScreenState extends State<UserListScreen>
                           user.id.toString(),
                           style: const TextStyle(color: Colors.deepPurple),
                         ),
+                      ),
+                      trailing: IconButton(
+                        icon: const Icon(
+                          Icons.person_add_alt_1,
+                          color: Colors.deepPurple,
+                        ),
+                        onPressed: () {
+                          _addUserToLocal(user);
+                        },
                       ),
                     ),
                   ),

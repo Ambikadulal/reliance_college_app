@@ -20,7 +20,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   static List<Widget> _widgetOptions = <Widget>[
     StudentDashboard(),
-    StudentInfoListView(),
+    UserListScreen(),
     ProfileScreen(),
   ];
 
@@ -30,8 +30,8 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  String email = "";
-  String name = "";
+  String name = ""; // Change from email to username
+  String email = ""; // You can keep email if you need it elsewhere
   bool isLoggedIn = false;
 
   @override
@@ -41,20 +41,20 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _loadUserData() async {
+    // Inside _loadUserData method
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-      email = prefs.getString('email') ?? "";
-      name = prefs.getString('name') ?? "";
-      _buildWidgetOptions();
+      name =
+          prefs.getString('username') ??
+          "Student"; // Load the username instead of email
     });
   }
 
   void _buildWidgetOptions() {
     _widgetOptions = <Widget>[
-      // StudentDashboard(),
+      StudentDashboard(),
       UserListScreen(),
-      StudentInfoListView(),
       ProfileScreen(),
     ];
   }
@@ -76,12 +76,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   const Icon(Icons.account_circle, size: 100),
                   const SizedBox(height: 10),
-                  Text(name, style: const TextStyle(fontSize: 20)),
+                  Text(
+                    name,
+                    style: const TextStyle(fontSize: 20),
+                  ), // Display the username
                   const SizedBox(height: 5),
-                  Text(email, style: const TextStyle(fontSize: 16)),
+                  // Instead of email, display the username
+                  Text(
+                    name,
+                    style: const TextStyle(fontSize: 16),
+                  ), // Or use 'name' if you're still using that
                 ],
               ),
             ),
+
             ListTile(
               leading: const Icon(Icons.home),
               title: const Text('Home'),

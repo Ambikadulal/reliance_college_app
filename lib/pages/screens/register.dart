@@ -1,5 +1,6 @@
 import 'package:bca_student_app/pages/screens/signin.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -9,24 +10,15 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  late final TextEditingController _usernameController;
-  late final TextEditingController _emailController;
-  late final TextEditingController _passwordController;
-
   final _formKey = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    _usernameController = TextEditingController();
-    _emailController = TextEditingController();
-    _passwordController = TextEditingController();
-    super.initState();
-  }
+  final _emailController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   void dispose() {
-    _usernameController.dispose();
     _emailController.dispose();
+    _nameController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -34,211 +26,179 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFFBEFF5),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 60),
         child: Form(
           key: _formKey,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 80),
-              Padding(
-                padding: const EdgeInsets.only(left: 5),
-                child: Text(
-                  "Create Account",
-                  style: TextStyle(
-                    fontSize: 32,
-                    color: Colors.blueAccent,
-                    fontWeight: FontWeight.bold,
-                  ),
+              Text(
+                "Create Account",
+                style: TextStyle(
+                  fontSize: 34,
+                  color: Color(0xFFB980F0),
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 30),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                child: TextFormField(
-                  controller: _usernameController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your username';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.person_2_rounded,
-                      color: Colors.blueAccent,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(18),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.purple.withOpacity(0.1),
+                      blurRadius: 20,
+                      offset: Offset(0, 10),
                     ),
-                    hintText: "Username",
-                    hintStyle: TextStyle(color: Colors.grey[600]),
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 18,
-                      horizontal: 15,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.grey),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.blueAccent),
-                    ),
-                  ),
+                  ],
                 ),
-              ),
-              SizedBox(height: 25),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                child: TextFormField(
-                  controller: _emailController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your email';
-                    } else if (!RegExp(
-                      r'^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+',
-                    ).hasMatch(value)) {
-                      return 'Please enter a valid email address';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.email_outlined,
-                      color: Colors.blueAccent,
-                    ),
-                    hintText: "Email",
-                    hintStyle: TextStyle(color: Colors.grey[600]),
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 18,
-                      horizontal: 15,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.grey),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.blueAccent),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 25),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                child: TextFormField(
-                  controller: _passwordController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
-                    } else if (!RegExp(
-                      r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$',
-                    ).hasMatch(value)) {
-                      return 'Password must be at least 6 characters, including a letter and a number';
-                    }
-                    return null;
-                  },
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.lock_open_outlined,
-                      color: Colors.blueAccent,
-                    ),
-                    hintText: "Password",
-                    hintStyle: TextStyle(color: Colors.grey[600]),
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 18,
-                      horizontal: 15,
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.grey),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.blueAccent),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30,
-                  vertical: 30,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
                   children: [
-                    Text(
-                      "Register Account",
-                      style: TextStyle(
-                        fontSize: 26,
-                        color: Colors.deepPurple,
-                        fontWeight: FontWeight.w900,
+                    TextFormField(
+                      controller: _nameController,
+                      validator:
+                          (value) =>
+                              value == null || value.isEmpty
+                                  ? 'Enter your name'
+                                  : null,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.person_outline,
+                          color: Color(0xFFB980F0),
+                        ),
+                        hintText: "Full Name",
+                        filled: true,
+                        fillColor: Color(0xFFF9F5FC),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: BorderSide.none,
+                        ),
                       ),
                     ),
-                    InkWell(
-                      onTap: () {
-                        if (_formKey.currentState!.validate()) {
-                          // Handle registration logic
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _emailController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty)
+                          return 'Enter your email';
+                        final emailRegex = RegExp(
+                          r"^[\w-\.]+@([\w-]+\.)+[\w]{2,4}$",
+                        );
+                        return emailRegex.hasMatch(value)
+                            ? null
+                            : 'Enter a valid email';
+                      },
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.email_outlined,
+                          color: Color(0xFFB980F0),
+                        ),
+                        hintText: "Email Address",
+                        filled: true,
+                        fillColor: Color(0xFFF9F5FC),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _passwordController,
+                      obscureText: true,
+                      validator: (value) {
+                        if (value == null || value.isEmpty)
+                          return 'Enter your password';
+                        if (!RegExp(
+                          r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$',
+                        ).hasMatch(value)) {
+                          return 'At least 6 characters, including letters and numbers';
                         }
+                        return null;
                       },
-                      child: ClipOval(
-                        child: Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(color: Colors.blue[300]),
-                          child: Icon(
-                            Icons.arrow_forward_ios_outlined,
-                            color: Colors.white,
-                          ),
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.lock_outline,
+                          color: Color(0xFFB980F0),
+                        ),
+                        hintText: "Password",
+                        filled: true,
+                        fillColor: Color(0xFFF9F5FC),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: BorderSide.none,
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 5),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 40,
-                  vertical: 10,
+              const SizedBox(height: 40),
+              InkWell(
+                onTap: () async {
+                  if (_formKey.currentState!.validate()) {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    await prefs.setString('name', _nameController.text);
+                    await prefs.setString('email', _emailController.text);
+                    await prefs.setString(
+                      'password',
+                      _passwordController.text,
+                    ); // optional
+
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => const Signin()),
+                    );
+                  }
+                },
+                child: Container(
+                  height: 55,
+                  width: 180,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Color(0xFFB980F0), Color(0xFFFBAED2)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.pinkAccent.withOpacity(0.2),
+                        blurRadius: 10,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Register",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                  ),
                 ),
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => Register()),
-                        );
-                      },
-                      child: Text(
-                        "Already have an account? ",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => Signin()),
-                        );
-                      },
-                      child: Text(
-                        "Sign in",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.blueAccent,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                  ],
+              ),
+              const SizedBox(height: 30),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => Signin()),
+                  );
+                },
+                child: Text(
+                  "Already have an account? Sign in",
+                  style: TextStyle(
+                    color: Colors.teal[600],
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ],
