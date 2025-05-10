@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
       email = prefs.getString('email') ?? "";
-      name = prefs.getString('name') ?? "";
+      name = prefs.getString('namee') ?? "";
       _buildWidgetOptions();
     });
   }
