@@ -1,9 +1,19 @@
-import 'package:bca_student_app/pages/screens/academic_page.dart';
+import 'package:bca_student_app/pages/screens/Home_subpage/academic_page.dart';
+import 'package:bca_student_app/pages/screens/Home_subpage/billing_page.dart';
+import 'package:bca_student_app/pages/screens/Home_subpage/exam_page.dart';
+import 'package:bca_student_app/pages/screens/Home_subpage/others_page.dart';
 import 'package:bca_student_app/pages/screens/api/user_list.dart';
 import 'package:bca_student_app/pages/screens/bottom_nav/bottom_navigation_bar.dart';
+import 'package:bca_student_app/pages/screens/drawer/attendance.dart';
+import 'package:bca_student_app/pages/screens/drawer/calender.dart';
+import 'package:bca_student_app/pages/screens/drawer/lecture.dart';
+import 'package:bca_student_app/pages/screens/drawer/perfomance.dart';
 import 'package:bca_student_app/pages/screens/profile.dart';
 import 'package:bca_student_app/pages/screens/student_info_listview.dart';
+import 'package:bca_student_app/pages/top_tapbar_icon.dart/notification_screen.dart';
+import 'package:bca_student_app/pages/top_tapbar_icon.dart/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -44,16 +54,119 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: Drawer(
+        backgroundColor: Colors.brown[100],
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(child: Text("Draw Header")),
-            ListTile(title: const Text('Item1'), onTap: () {}),
-            ListTile(title: const Text('Item 2'), onTap: () {}),
-            ListTile(title: const Text('Item 3'), onTap: () {}),
+            DrawerHeader(
+              decoration: BoxDecoration(color: Colors.blueGrey[50]),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Lottie.asset(
+                    'assets/welcome.json',
+                    height: 130,
+                    // height: 170,
+                    fit: BoxFit.cover,
+                  ),
+                  SizedBox(height: 6),
+                  // Text(
+                  //   "Hi, Welcome Back!",
+                  //   style: TextStyle(
+                  //     color: Colors.black,
+                  //     fontSize: 18,
+                  //     fontWeight: FontWeight.bold,
+                  //   ),
+                  // ),
+                ],
+              ),
+              // child: const Text(
+              //   "HI, Welcome Back!",
+              //   style: TextStyle(color: Colors.black),
+              // ),
+            ),
+
+            ListTile(
+              leading: Icon(Icons.check_circle),
+              title: Text('Attendance'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AttendancePage()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.chat),
+              title: Text('Chat'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.school),
+              title: Text('Lecturer'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LectureListPage()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.bar_chart),
+              title: Text('Performance'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PerformancePage()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.calendar_month),
+              title: Text('calender'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CalendarPage()),
+                );
+              },
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (context) => ProfileScreen(email: '', username: ''),
+                  ),
+                );
+              },
+              style: ButtonStyle(
+                padding: WidgetStateProperty.all<EdgeInsets>(
+                  EdgeInsets.symmetric(horizontal: 11, vertical: 9),
+                ),
+                minimumSize: WidgetStateProperty.all<Size>(
+                  Size(30, 40),
+                ), // smaller size
+                backgroundColor: WidgetStateProperty.all<Color>(Colors.green),
+                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                ),
+              ),
+
+              child: Text(
+                "Login",
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyLarge?.copyWith(color: Colors.white),
+              ),
+            ),
           ],
         ),
       ),
+
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: ListTile(
@@ -91,15 +204,25 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
         actions: [
           IconButton(
             icon: const Icon(
-              Icons.notifications_none_outlined,
+              Icons.notification_add_outlined,
               color: Colors.black,
               size: 25,
             ),
-            onPressed: () async {},
+            onPressed: () async {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NotificationScreen()),
+              );
+            },
           ),
           IconButton(
             icon: const Icon(Icons.settings, color: Colors.black, size: 25),
-            onPressed: () async {},
+            onPressed: () async {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SettingsPage()),
+              );
+            },
           ),
         ],
       ),
@@ -108,10 +231,19 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           _selectedIndex == 0
               ? TabBarView(
                 controller: _tabController,
-                children: const [
-                  AcademicsSection(),
-                  // Center(child: Text("Home Page")),
-                  UserListScreen(),
+                children: [
+                  SingleChildScrollView(
+                    child: Column(
+                      children: const [
+                        AcademicsSection(),
+                        ExamSection(),
+                        BillingPage(),
+                        OthersPage(),
+                        OthersPage(),
+                      ],
+                    ),
+                  ),
+                  const UserListScreen(),
                 ],
               )
               : _widgetOptions[_selectedIndex],

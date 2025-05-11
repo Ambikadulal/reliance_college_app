@@ -112,7 +112,7 @@ class _RegisterState extends State<Register> {
                 ),
               ),
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 15),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: TextFormField(
@@ -132,7 +132,7 @@ class _RegisterState extends State<Register> {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
+            // const SizedBox(height: 5),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
               child: Row(
@@ -165,7 +165,7 @@ class _RegisterState extends State<Register> {
                 ],
               ),
             ),
-            const SizedBox(height: 5),
+            // const SizedBox(height: 5),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
               child: Row(

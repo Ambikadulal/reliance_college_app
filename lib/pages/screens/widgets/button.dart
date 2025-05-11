@@ -8,7 +8,7 @@ class CommonButtonWidget extends StatelessWidget {
     super.key,
     required this.buttonText,
     required this.bottoncolor,
-    required this.onPressed, 
+    required this.onPressed, required Color textColor, 
   });
 
   @override

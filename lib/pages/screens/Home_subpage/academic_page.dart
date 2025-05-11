@@ -28,7 +28,7 @@ class AcademicsSection extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 mainAxisSpacing: 20,
                 crossAxisSpacing: 10,
-                children: const [
+                children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

@@ -1,4 +1,4 @@
-import 'package:bca_student_app/pages/screens/my_home_page.dart';
+import 'package:bca_student_app/pages/screens/api/pages/welcome.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(),
+      home: const Welcome(), 
     );
   }
 }

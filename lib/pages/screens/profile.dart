@@ -102,6 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               buttonText: "Logout",
                               onPressed: _logout,
                               bottoncolor: Colors.blue,
+                              textColor: Colors.white,
                             ),
                           ],
                         )
@@ -137,6 +138,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 );
                               },
                               bottoncolor: Colors.green,
+                              textColor: Colors.white,
                             ),
                             const SizedBox(height: 10),
                             CommonButtonWidget(
@@ -150,6 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 );
                               },
                               bottoncolor: Colors.lightGreenAccent,
+                              textColor: Colors.white,
                             ),
                           ],
                         ),
